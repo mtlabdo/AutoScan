@@ -1,0 +1,82 @@
+<resources>
+
+
+    <string name="splash_text">Vite &amp; Fiable !</string>
+
+    <string name="language_code">fr</string>
+    <string name="language_name">Français</string>
+
+
+    <!-- TopBarWithLogo -->
+    <string name="first_circulation">Première circulation: %1$s</string>
+
+    <!-- VehicleBasicInfoSection -->
+    <string name="basic_information">Informations de base</string>
+    <string name="registration">Immatriculation</string>
+    <string name="brand">Marque</string>
+    <string name="model">Modèle</string>
+    <string name="first_registration_date">Date de première circulation</string>
+    <string name="gearbox">Boite Vitesse</string>
+    <string name="number_of_doors">Nombre de portes</string>
+    <string name="color">Couleur</string>
+    <string name="fuel">Carburant</string>
+
+    <!-- VehicleTechnicalDetailsSection -->
+    <string name="technical_information">Informations techniques</string>
+    <string name="fiscal_power">Puissance fiscale</string>
+    <string name="real_fiscal_power">Puissance fiscale réelle</string>
+    <string name="body_type">Type de carrosserie</string>
+    <string name="weight">Poids</string>
+    <string name="cylinders">Cylindres</string>
+    <string name="energy">Énergie</string>
+
+    <!-- VehicleIdentificationSection -->
+    <string name="vehicle_identification">Identification du véhicule</string>
+    <string name="genre">Genre</string>
+    <string name="vin">VIN (Numéro d\'identification du véhicule)</string>
+    <string name="type_mine">Type Mine</string>
+    <string name="sra_commercial">Sra Commercial</string>
+    <string name="sra_group">Sra Groupe</string>
+    <string name="sra_id">Sra Id</string>
+    <string name="engine_code">Code Moteur</string>
+    <string name="k_type">K-Type</string>
+
+    <!-- VehicleAdditionalDetailsSection -->
+    <string name="additional_information">Informations supplémentaires</string>
+    <string name="number_of_passengers">Nombre de passagers</string>
+    <string name="collection">Collection</string>
+
+    <string name="not_available">Non disponible</string>
+
+    <string name="search_plate_hint">Veuillez entrer un numéro de plaque.</string>
+    <string name="search_action">Rechercher</string>
+    <string name="search_history_title">Historique de recherche</string>
+    <string name="delete_action">Supprimer</string>
+    <string name="daily_tip_title">Conseil du jour ⭐</string>
+
+    <string name="home_title">Accueil</string>
+    <string name="settings">Paramètres</string>
+    <string name="help_icon_content_description">Aide</string>
+
+
+    <string name="language_card_title">Langue</string>
+    <string name="dark_mode_card_title">Mode Sombre</string>
+    <string name="about_us_card_title">À propos</string>
+    <string name="privacy_policy_card_title">Politique de confidentialité</string>
+    <string name="terms_of_service_card_title">Conditions de service</string>
+    <string name="terms_of_use_card_title">Conditions d\'Utilisation</string>
+
+    <string name="welcome_message">
+    Bienvenue sur %1$s, présenté par Famous Inc ! Notre mission est de fournir des rapports d\'historique de véhicules complets et accessibles pour donner plus de pouvoir aux acheteurs de voitures et aux passionnés.
+    Fondée en 2024, notre équipe est dédiée à fournir des informations détaillées et fiables sur l\'historique des véhicules, vous aidant à prendre des décisions éclairées.
+
+    Avec %1$s, nous visons à offrir la tranquillité d\'esprit en fournissant des informations sur le passé d\'un véhicule, y compris les accidents précédents, l\'historique de propriété et les dossiers de service, le tout à portée de main.
+    Nous sommes fiers d\'avoir aidé des milliers d\'utilisateurs à éviter les pièges potentiels du marché des voitures d\'occasion et d\'avoir favorisé une communauté qui valorise la transparence et l\'achat éclairé.
+
+    Nous croyons en l\'importance de la confiance et de la transparence dans l\'industrie automobile. Merci d\'avoir choisi %1$s, et nous espérons que notre service vous fournira les informations précieuses dont vous avez besoin pour prendre des décisions confiantes concernant les véhicules.
+</string>
+
+
+    <string name="select_language">Sélectionner la langue</string>
+
+</resources>

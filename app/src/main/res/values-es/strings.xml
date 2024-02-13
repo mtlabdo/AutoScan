@@ -1,0 +1,80 @@
+<resources>
+
+    <string name="splash_text">¡Rápido y Confiable!</string>
+
+    <string name="language_code">es</string>
+    <string name="language_name">Español</string>
+
+
+    <!-- TopBarWithLogo -->
+    <string name="first_circulation">Primera circulación: %1$s</string>
+
+    <!-- VehicleBasicInfoSection -->
+    <string name="basic_information">Información Básica</string>
+    <string name="registration">Registro</string>
+    <string name="brand">Marca</string>
+    <string name="model">Modelo</string>
+    <string name="first_registration_date">Fecha de Primera Circulación</string>
+    <string name="gearbox">Caja de Cambios</string>
+    <string name="number_of_doors">Número de Puertas</string>
+    <string name="color">Color</string>
+    <string name="fuel">Combustible</string>
+
+    <!-- VehicleTechnicalDetailsSection -->
+    <string name="technical_information">Información Técnica</string>
+    <string name="fiscal_power">Potencia Fiscal</string>
+    <string name="real_fiscal_power">Potencia Fiscal Real</string>
+    <string name="body_type">Tipo de Carrocería</string>
+    <string name="weight">Peso</string>
+    <string name="cylinders">Cilindros</string>
+    <string name="energy">Energía</string>
+
+    <!-- VehicleIdentificationSection -->
+    <string name="vehicle_identification">Identificación del Vehículo</string>
+    <string name="genre">Género</string>
+    <string name="vin">VIN (Número de Identificación del Vehículo)</string>
+    <string name="type_mine">Tipo Mina</string>
+    <string name="sra_commercial">SRA Comercial</string>
+    <string name="sra_group">Grupo SRA</string>
+    <string name="sra_id">ID de SRA</string>
+    <string name="engine_code">Código de Motor</string>
+    <string name="k_type">Tipo K</string>
+
+    <!-- VehicleAdditionalDetailsSection -->
+    <string name="additional_information">Información Adicional</string>
+    <string name="number_of_passengers">Número de Pasajeros</string>
+    <string name="collection">Colección</string>
+
+    <string name="not_available">No Disponible</string>
+
+    <string name="search_plate_hint">Por favor ingrese un número de placa.</string>
+    <string name="search_action">Buscar</string>
+    <string name="search_history_title">Historial de Búsqueda</string>
+    <string name="delete_action">Eliminar</string>
+    <string name="daily_tip_title">Consejo del Día ⭐</string>
+
+    <string name="home_title">Inicio</string>
+    <string name="settings">Ajustes</string>
+    <string name="help_icon_content_description">Ayuda</string>
+
+
+    <string name="language_card_title">Idioma</string>
+    <string name="dark_mode_card_title">Modo Oscuro</string>
+    <string name="about_us_card_title">Sobre Nosotros</string>
+    <string name="privacy_policy_card_title">Política de Privacidad</string>
+    <string name="terms_of_service_card_title">Términos de Servicio</string>
+    <string name="terms_of_use_card_title">Términos de Uso</string>
+
+    <string name="welcome_message">
+    Bienvenido a %1$s, presentado por Famous Inc! Nuestra misión es proporcionar informes de historial de vehículos completos y accesibles para empoderar a los compradores de automóviles y entusiastas.
+    Fundada en 2024, nuestro equipo está dedicado a proporcionar información detallada y confiable sobre el historial de vehículos, ayudándote a tomar decisiones informadas.
+
+    Con %1$s, nuestro objetivo es ofrecer tranquilidad al proporcionar información sobre el pasado de un vehículo, incluidos accidentes anteriores, historial de propiedad y registros de servicio, todo al alcance de tu mano.
+    Estamos orgullosos de haber ayudado a miles de usuarios a evitar posibles trampas en el mercado de automóviles usados y de haber fomentado una comunidad que valora la transparencia y la compra informada.
+
+    Creemos en la importancia de la confianza y la transparencia en la industria automotriz. Gracias por elegir %1$s, y esperamos que nuestro servicio te proporcione la valiosa información que necesitas para tomar decisiones seguras sobre los vehículos.
+    </string>
+
+    <string name="select_language">Seleccionar Idioma</string>
+
+</resources>

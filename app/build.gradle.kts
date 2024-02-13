@@ -1,0 +1,128 @@
+@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
+plugins {
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.hilt)
+    id(libs.plugins.ksp.get().pluginId)
+}
+
+android {
+    namespace = "com.vehicule.immatriculation.histo"
+    compileSdk = 34
+
+    defaultConfig {
+        applicationId = "com.vehicule.immatriculation.histo"
+        minSdk = 23
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary = true
+        }
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
+    }
+
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+    }
+
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+}
+
+dependencies {
+
+    // Core Module
+    implementation(projects.core)
+
+    // Repository Module
+    api(projects.repository)
+
+    // data Module
+    implementation(projects.data)
+
+
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.bundles.compose)
+
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.coil.compose)
+    implementation(libs.androidx.work.runtime.ktx)
+
+    implementation(libs.core.ktx)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.bundles.compose)
+    implementation(libs.material3)
+    implementation(libs.material)
+
+    implementation(libs.converter.gson)
+
+    // Hilt
+    api(libs.androidx.hilt.work)
+    testImplementation(libs.junit.jupiter)
+    debugImplementation(libs.androidx.ui.tooling)
+    ksp(libs.androidx.hilt.compiler)
+
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    debugImplementation("androidx.compose.ui:ui-tooling:1.4.2")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.4.2")
+
+    implementation(libs.androidx.material.icons.core)
+    implementation(libs.androidx.material.icons.extended)
+
+    implementation("com.airbnb.android:lottie-compose:6.3.0")
+
+    implementation("io.coil-kt:coil-compose:2.5.0")
+
+    // Testing
+    testImplementation(libs.test.mockk)
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlin.test.junit)
+
+
+    testImplementation(libs.kotlinx.coroutines.test.v152)
+
+    testImplementation(libs.androidx.core.testing)
+
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.ui.test.junit4)
+    debugImplementation(libs.ui.test.manifest)
+
+}

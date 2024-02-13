@@ -1,0 +1,81 @@
+<resources>
+
+    <string name="splash_text">Fast &amp; Reliable!</string>
+
+    <string name="language_code">en</string>
+    <string name="language_name">English</string>
+
+
+    <!-- TopBarWithLogo -->
+    <string name="first_circulation">First circulation: %1$s</string>
+
+    <!-- VehicleBasicInfoSection -->
+    <string name="basic_information">Basic Information</string>
+    <string name="registration">Registration</string>
+    <string name="brand">Brand</string>
+    <string name="model">Model</string>
+    <string name="first_registration_date">First Registration Date</string>
+    <string name="gearbox">Gearbox</string>
+    <string name="number_of_doors">Number of Doors</string>
+    <string name="color">Color</string>
+    <string name="fuel">Fuel</string>
+
+    <!-- VehicleTechnicalDetailsSection -->
+    <string name="technical_information">Technical Information</string>
+    <string name="fiscal_power">Fiscal Power</string>
+    <string name="real_fiscal_power">Real Fiscal Power</string>
+    <string name="body_type">Body Type</string>
+    <string name="weight">Weight</string>
+    <string name="cylinders">Cylinders</string>
+    <string name="energy">Energy</string>
+
+    <!-- VehicleIdentificationSection -->
+    <string name="vehicle_identification">Vehicle Identification</string>
+    <string name="genre">Genre</string>
+    <string name="vin">VIN (Vehicle Identification Number)</string>
+    <string name="type_mine">Mine Type</string>
+    <string name="sra_commercial">Commercial SRA</string>
+    <string name="sra_group">Group SRA</string>
+    <string name="sra_id">SRA ID</string>
+    <string name="engine_code">Engine Code</string>
+    <string name="k_type">K-Type</string>
+
+    <!-- VehicleAdditionalDetailsSection -->
+    <string name="additional_information">Additional Information</string>
+    <string name="number_of_passengers">Number of Passengers</string>
+    <string name="collection">Collection</string>
+
+    <string name="not_available">Not Available</string>
+
+    <string name="search_plate_hint">Please enter a plate number.</string>
+    <string name="search_action">Search</string>
+    <string name="search_history_title">Search History</string>
+    <string name="delete_action">Delete</string>
+    <string name="daily_tip_title">Tip of the Day ⭐</string>
+
+    <string name="home_title">Home</string>
+    <string name="settings">Settings</string>
+    <string name="help_icon_content_description">Help</string>
+
+
+    <string name="language_card_title">Language</string>
+    <string name="dark_mode_card_title">Dark Mode</string>
+    <string name="about_us_card_title">About Us</string>
+    <string name="privacy_policy_card_title">Privacy Policy</string>
+    <string name="terms_of_service_card_title">Terms of Service</string>
+    <string name="terms_of_use_card_title">Terms of Use</string>
+
+    <string name="welcome_message">
+    Welcome to %1$s, presented by Famous Inc! Our mission is to provide comprehensive and accessible vehicle history reports to empower car buyers and enthusiasts.
+    Founded in 2024, our team is dedicated to delivering detailed and reliable information on vehicle history, helping you make informed decisions.
+
+    With %1$s, we aim to offer peace of mind by providing information about a vehicle\'s past, including previous accidents, ownership history, and service records, all at your fingertips.
+    We\'re proud to have helped thousands of users avoid potential pitfalls in the used car market and fostered a community that values transparency and informed buying.
+
+    We believe in the importance of trust and transparency in the automotive industry. Thank you for choosing %1$s, and we hope our service will provide you with the valuable information you need to make confident decisions about vehicles.
+</string>
+
+
+    <string name="select_language">Select Language</string>
+
+</resources>
