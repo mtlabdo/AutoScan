@@ -42,7 +42,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vehicule.immatriculation.histo.R
-import com.vehicule.immatriculation.histo.ui.theme.AndroidTestTheme
+import com.vehicule.immatriculation.histo.ui.theme.AutoScanAppTheme
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -152,7 +152,7 @@ fun PlateWidget(
 @Preview(showBackground = true)
 @Composable
 fun WidgetPreview() {
-    AndroidTestTheme {
+    AutoScanAppTheme {
         PlateWidget(plateText = "")
     }
 }

@@ -22,7 +22,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.vehicule.immatriculation.histo.R
 import com.vehicule.immatriculation.histo.navigation.AppState
-import com.vehicule.immatriculation.histo.ui.theme.AndroidTestTheme
+import com.vehicule.immatriculation.histo.ui.theme.AutoScanAppTheme
 import kotlinx.coroutines.delay
 
 @Composable
@@ -84,7 +84,7 @@ fun LoadingScreen() {
 @Preview(showBackground = true, widthDp = 500, heightDp = 1000)
 @Composable
 fun DefaultPreview() {
-    AndroidTestTheme {
+    AutoScanAppTheme {
         SplashScreen(null)
     }
 }

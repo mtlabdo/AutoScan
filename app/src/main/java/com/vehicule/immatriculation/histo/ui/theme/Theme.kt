@@ -33,7 +33,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun AndroidTestTheme(
+fun AutoScanAppTheme(
     content: @Composable () -> Unit
 ) {
 
