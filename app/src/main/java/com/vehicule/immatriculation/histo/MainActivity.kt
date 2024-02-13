@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.vehicule.immatriculation.histo.dispatcher.DispatcherProvider
 import com.vehicule.immatriculation.histo.navigation.AppNavigation
-import com.vehicule.immatriculation.histo.ui.theme.AndroidTestTheme
+import com.vehicule.immatriculation.histo.ui.theme.AutoScanAppTheme
 import com.vehicule.immatriculation.histo.view.viewmodel.DetailViewModel
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun RecipesAppTheme() {
-        AndroidTestTheme {
+        AutoScanAppTheme {
             // A surface container using the 'background' color from the theme
             Surface(
                 color = MaterialTheme.colorScheme.background,

@@ -30,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vehicule.immatriculation.histo.R
 import com.vehicule.immatriculation.histo.navigation.AppState
-import com.vehicule.immatriculation.histo.ui.theme.AndroidTestTheme
+import com.vehicule.immatriculation.histo.ui.theme.AutoScanAppTheme
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -101,6 +101,6 @@ fun TopBar(appState: AppState) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    AndroidTestTheme {
+    AutoScanAppTheme {
     }
 }

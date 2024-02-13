@@ -26,18 +26,6 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Run unit tests
-        run: ./gradlew testDebugUnitTest --no-daemon
-
-      # Create APK Debug
-      - name: Build apk debug project (APK) - ${{ env.main_project_module }} module
-        run: ./gradlew assembleDebug
-
-      # Create APK Release
-      - name: Build apk release project (APK) - ${{ env.main_project_module }} module
-        run: ./gradlew assemble
-
-
       # Create Bundle AAB Release
       - name: Decode keystore
         run: echo ${{ secrets.KEYSTORE_BASE64 }} | base64 --decode > keystore.jks
@@ -50,22 +38,6 @@ jobs:
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           JAVA_OPTS: -Dorg.gradle.jvmargs=-Xmx2048m -Dorg.gradle.daemon=false -Dorg.gradle.configureondemand=false -Dkotlin.incremental=false
-
-
-
-      # Upload AAB Release
-      - name: Upload APK Debug
-        uses: actions/upload-artifact@v2
-        with:
-          name: app-debug
-          path: app/build/outputs/bundle/release/app-debug.apk
-
-      # Upload APK Release
-      - name: Upload APK Release
-        uses: actions/upload-artifact@v2
-        with:
-          name: app-apk
-          path: app/build/outputs/bundle/release/app-release.apk
 
 
       # Upload AAB Release

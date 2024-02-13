@@ -46,7 +46,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.vehicule.immatriculation.histo.R
 import com.vehicule.immatriculation.histo.navigation.AppState
-import com.vehicule.immatriculation.histo.ui.theme.AndroidTestTheme
+import com.vehicule.immatriculation.histo.ui.theme.AutoScanAppTheme
 import com.vehicule.immatriculation.histo.ui.widget.BackUiComposable
 import com.vehicule.immatriculation.histo.view.state.DetailState
 import com.vehicule.immatriculation.histo.view.viewmodel.DetailViewModel
@@ -402,7 +402,7 @@ fun ErrorScreen(errorMessage: String) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    AndroidTestTheme {
+    AutoScanAppTheme {
         VehicleDetailsScreen(detail = detail) {}
     }
 }

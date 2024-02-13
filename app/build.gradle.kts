@@ -25,7 +25,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -99,15 +99,15 @@ dependencies {
 
     implementation(libs.androidx.hilt.navigation.compose)
 
-    debugImplementation("androidx.compose.ui:ui-tooling:1.4.2")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.4.2")
+    debugImplementation(libs.androidx.ui.tooling.v142)
+    implementation(libs.androidx.ui.tooling.preview)
 
     implementation(libs.androidx.material.icons.core)
     implementation(libs.androidx.material.icons.extended)
 
-    implementation("com.airbnb.android:lottie-compose:6.3.0")
+    implementation(libs.lottie.compose)
 
-    implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation(libs.coil.compose)
 
     // Testing
     testImplementation(libs.test.mockk)

@@ -1,5 +1,6 @@
 [versions]
 agp = "8.1.1"
+androidx-ui-tooling = "1.4.2"
 ksp = "1.9.22-1.0.16"
 coil-compose = "2.5.0"
 converter-gson = "2.9.0"
@@ -20,6 +21,7 @@ activity-compose = "1.7.2"
 compose-bom = "2023.09.00"
 compose-navigation = "2.7.3"
 appcompat = "1.6.1"
+lottie-compose = "6.3.0"
 material = "1.11.0"
 hilt = "2.48"
 
@@ -30,6 +32,7 @@ retrofit = "2.9.0"
 retrofit-interceptor-logging = "4.11.0"
 kotlinx-coroutines = "1.7.3"
 room-runtime = "2.6.1"
+ui-tooling-preview = "1.6.1"
 work-runtime-ktx = "2.9.0"
 test-mockk = "1.13.8"
 ui-tooling = "1.6.0"
@@ -46,6 +49,8 @@ androidx-material-icons-extended = { module = "androidx.compose.material:materia
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room-runtime" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room-runtime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room-runtime" }
+androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "ui-tooling-preview" }
+androidx-ui-tooling-v142 = { module = "androidx.compose.ui:ui-tooling", version.ref = "androidx-ui-tooling" }
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work-runtime-ktx" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converter-gson" }
@@ -67,6 +72,7 @@ compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
 compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation" }
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie-compose" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
