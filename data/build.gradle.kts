@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.vehicule.immatriculation.histo.data"
+    namespace = "com.vehicle.immatriculation.vin.data"
     compileSdk = 34
 
     defaultConfig {

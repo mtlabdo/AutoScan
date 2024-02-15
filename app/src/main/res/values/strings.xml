@@ -1,8 +1,12 @@
 <resources>
 
-    <string name="app_name" translatable="false">AutoScan</string>
+<!--
+    <string name="app_name" translatable="false">AutoInspect: Histoire &amp; Infos Véhicule</string>
+-->
+    <string name="app_name" translatable="false">AutoInspect: Rapport Véhicule</string>
 
-    <string name="splash_text">Vite &amp; Fiable !</string>
+    <string name="splash_text">Décryptez, Décidez, Conduisez !</string>
+    <!--<string name="splash_text">"AutoInspect: Au-delà de la Plaque, Toute l'Histoire"</string>-->
 
     <string name="language_code">fr</string>
     <string name="language_name">Français</string>

@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.vehicule.immatriculation.histo"
+    namespace = "com.vehicle.immatriculation.vin"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.vehicule.immatriculation.histo"
+        applicationId = "com.vehicle.immatriculation.vin"
         minSdk = 23
         targetSdk = 34
         versionCode = 1
