@@ -1,12 +1,11 @@
 package com.vehicle.immatriculation.vin.utils
 
 object Const {
-    const val HELP_MAIL = "AutoScanHelp@gmail.com"
-
+    const val HELP_MAIL = "autoinspectHelp@gmail.com"
     private const val BASE_URL_PRIVACY = "https://sites.google.com/view/"
-    const val PRIVACY_URL = "${BASE_URL_PRIVACY}autoscan-app-privacy"
-    const val TERM_SERVICE_URL = "${BASE_URL_PRIVACY}autoscan-app-term-of-service"
-    const val TERM_USE_URL = "${BASE_URL_PRIVACY}autoscan-app-term-of-use"
+    const val PRIVACY_URL = "${BASE_URL_PRIVACY}auto-inspect-app-privacy"
+    const val TERM_SERVICE_URL = "${BASE_URL_PRIVACY}auto-inspect-term-of-service"
+    const val TERM_USE_URL = "${BASE_URL_PRIVACY}auto-inspect-app-term-of-use/accueil"
 
     val conseilsDuJour = listOf(
         "Maintenez la pression des pneus au niveau recommandé pour améliorer la sécurité et l'efficacité du carburant.",
