@@ -57,6 +57,28 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    signingConfigs {
+        create("release") {
+            storeFile = file("keystore.jks")
+            storePassword = System.getenv("KEYSTORE_PASSWORD")
+            keyAlias = System.getenv("KEY_ALIAS")
+            keyPassword = System.getenv("KEY_PASSWORD")
+
+            // Logging debug information
+            project.logger.debug("my debug KEYSTORE_PASSWORD: ${System.getenv("KEYSTORE_PASSWORD")}")
+            project.logger.debug("my debug KEY_ALIAS: ${System.getenv("KEY_ALIAS")}")
+            project.logger.debug("my debug KEY_PASSWORD: ${System.getenv("KEY_PASSWORD")}")
+            project.logger.debug("my debug KEYSTORE_BASE64: ${System.getenv("KEYSTORE_BASE64")}")
+        }
+    }
+
+    buildTypes {
+        getByName("release") {
+            signingConfig = signingConfigs.getByName("release")
+            // Additional release configuration...
+        }
+    }
 }
 
 dependencies {
