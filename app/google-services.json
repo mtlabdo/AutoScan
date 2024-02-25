@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "111217679955",
+    "project_id": "autoinpect",
+    "storage_bucket": "autoinpect.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111217679955:android:9b28d5aaed0b568aafb0a6",
+        "android_client_info": {
+          "package_name": "com.vehicle.immatriculation.vin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcBbL664eEVBOpNLbSqlo1o0mER8YyPB8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
