@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 
 import com.vehicle.immatriculation.vin.dispatcher.DispatcherProvider
 import com.vehicle.immatriculation.vin.model.History
@@ -54,6 +55,17 @@ fun HomeScreen(
     coroutineDispatcher: DispatcherProvider,
     appState: AppState
 ) {
+
+    DisposableEffect(Unit) {
+        val callback = NavController.OnDestinationChangedListener { _, _, _ ->
+            viewModel.getHistory() // Refresh data when navigating back
+        }
+        appState.addOnDestinationChangedListener(callback)
+        onDispose {
+            appState.removeOnDestinationChangedListener(callback)
+        }
+    }
+
     Surface(color = MaterialTheme.colorScheme.background) {
         Scaffold(
             topBar = { TopBar(appState) },
@@ -111,7 +123,7 @@ fun HomeScreenContent(
         }
 
         Spacer(modifier = Modifier.weight(0.2f)) // Utiliser un Spacer avec un poids pour créer de l'espace
-        Spacer(modifier = Modifier.height(50.dp)) // Utiliser un Spacer avec un poids pour créer de l'espace
+        Spacer(modifier = Modifier.height(30.dp)) // Utiliser un Spacer avec un poids pour créer de l'espace
 
         SnackbarHost(hostState = snackbarHostState)
 
@@ -130,7 +142,7 @@ fun HomeScreenContent(
             })
 
 
-        Spacer(modifier = Modifier.height(16.dp)) // Espace fixe entre SearchingBar et ActionsSearch
+        Spacer(modifier = Modifier.height(12.dp)) // Espace fixe entre SearchingBar et ActionsSearch
         ActionsSearch(searchText, snackbarHostState) {
             if (searchText.isNotBlank()) {
                 appState.navigateToVehicleDetail(searchText)
@@ -139,38 +151,40 @@ fun HomeScreenContent(
         }
 
         Spacer(modifier = Modifier.weight(1f)) // Utiliser un Spacer avec un poids pour créer de l'espace
-        Spacer(modifier = Modifier.height(50.dp)) // Utiliser un Spacer avec un poids pour créer de l'espace
+        Spacer(modifier = Modifier.height(25.dp)) // Utiliser un Spacer avec un poids pour créer de l'espace
 
-        when (uiState) {
-            is HomeState.Loading -> {
-                LoadingIndicator()
-            }
+        if (!isSearchBarFocused) {
+            when (uiState) {
+                is HomeState.Loading -> {
+                    LoadingIndicator()
+                }
 
-            is HomeState.Success -> {
-                val successState = uiState as HomeState.Success
-                if (successState.historyList.isNotEmpty()) {
-                    Text(
-                        context.getString(R.string.search_history_title),
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.W700),
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                    LazyColumn {
-                        items(count = successState.historyList.size) { index ->
-                            SearchHistoryItem(successState.historyList[index]) { plateNumber ->
-                                viewModel.deleteHistoryItem(plateNumber)
+                is HomeState.Success -> {
+                    val successState = uiState as HomeState.Success
+                    if (successState.historyList.isNotEmpty()) {
+                        Text(
+                            context.getString(R.string.search_history_title),
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.W700),
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
+                        LazyColumn() {
+                            items(count = successState.historyList.size) { index ->
+                                val invertedIndex = successState.historyList.size - 1 - index
+                                SearchHistoryItem(successState.historyList[invertedIndex]) { plateNumber ->
+                                    viewModel.deleteHistoryItem(plateNumber)
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            is HomeState.Error -> {
-                val errorState = uiState as HomeState.Error
-                //ErrorText(errorState.error)
-            }
+                is HomeState.Error -> {
+                    val errorState = uiState as HomeState.Error
+                    //ErrorText(errorState.error)
+                }
 
+            }
         }
-
     }
 }
 

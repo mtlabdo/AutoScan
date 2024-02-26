@@ -28,7 +28,7 @@ class HomeViewModel @Inject constructor(
         getHistory()
     }
 
-    private fun getHistory() {
+    fun getHistory() {
         if (syncJob?.isActive == true) return
         try {
             syncJob = vehicleRepository.getHistory()
@@ -55,6 +55,7 @@ class HomeViewModel @Inject constructor(
     fun deleteHistoryItem(id: Int) {
         viewModelScope.launch(dispatcherProvider.io) {
             vehicleRepository.deleteHistoryItem(id)
+            getHistory()
         }
     }
 
