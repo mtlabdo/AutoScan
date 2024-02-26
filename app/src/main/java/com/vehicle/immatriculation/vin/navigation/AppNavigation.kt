@@ -118,5 +118,14 @@ class AppState(
     fun onBackClick() {
         navController.navigateUp()
     }
+
+
+    fun addOnDestinationChangedListener(callback: NavController.OnDestinationChangedListener) {
+        navController.addOnDestinationChangedListener(callback)
+    }
+
+    fun removeOnDestinationChangedListener(callback: NavController.OnDestinationChangedListener) {
+        navController.removeOnDestinationChangedListener(callback)
+    }
 }
 
