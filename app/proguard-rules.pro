@@ -19,21 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
-# Retrofit
--keep class retrofit2.** { *; }
--keepattributes Signature
--keepattributes Exceptions
 
-# Gson
--keep class com.google.gson.** { *; }
--keep class com.google.gson.** { *; }
--keepattributes Signature
--keepattributes *Annotation*
-
-# OkHttp
--keepattributes Signature
--keepattributes *Annotation*
--keep class okhttp3.** { *; }
--keep interface okhttp3.** { *; }
--dontwarn okhttp3.**
-
+# Conserve toutes les classes, méthodes et champs
+-keep class * {
+    public protected *;
+    private *;
+}
