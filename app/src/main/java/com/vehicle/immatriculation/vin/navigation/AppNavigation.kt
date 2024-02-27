@@ -14,13 +14,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.vehicle.immatriculation.vin.dispatcher.DispatcherProvider
 import com.vehicle.immatriculation.vin.ui.Screen
 import com.vehicle.immatriculation.vin.ui.screens.DetailScreen
 import com.vehicle.immatriculation.vin.ui.screens.HelpScreen
 import com.vehicle.immatriculation.vin.ui.screens.SettingsScreen
 import com.vehicle.immatriculation.vin.utils.assistedViewModel
 import com.vehicle.immatriculation.vin.view.viewmodel.DetailViewModel
-import com.vehicle.immatriculation.vin.dispatcher.DispatcherProvider
 
 const val RECIPES_NAV_HOST_ROUTE = "auto-scan-main-route"
 
@@ -28,66 +28,71 @@ const val RECIPES_NAV_HOST_ROUTE = "auto-scan-main-route"
 fun AppNavigation(dispatcherProvider: DispatcherProvider) {
     val navController = rememberNavController()
 
-    val appState = remember {
-        AppState(navController)
-    }
-
-    NavHost(
-        navController, startDestination = Screen.Splash.route, route = RECIPES_NAV_HOST_ROUTE
-    ) {
-
-        composable(Screen.Splash.route) {
-            SplashScreen(
-                appState = appState
-            )
+    val appState =
+        remember {
+            AppState(navController)
         }
 
+    NavHost(
+        navController,
+        startDestination = Screen.Splash.route,
+        route = RECIPES_NAV_HOST_ROUTE,
+    ) {
+        composable(Screen.Splash.route) {
+            SplashScreen(
+                appState = appState,
+            )
+        }
 
         composable(Screen.Home.route) {
             HomeScreen(
                 viewModel = hiltViewModel(),
                 coroutineDispatcher = dispatcherProvider,
-                appState = appState
+                appState = appState,
             )
         }
 
         composable(
             Screen.VehicleDetail.route,
-            arguments = listOf(navArgument(Screen.VehicleDetail.ARG_PLATE) {
-                type = NavType.StringType
-            })
+            arguments =
+                listOf(
+                    navArgument(Screen.VehicleDetail.ARG_PLATE) {
+                        type = NavType.StringType
+                    },
+                ),
         ) {
             val plateNumber =
                 requireNotNull(it.arguments?.getString(Screen.VehicleDetail.ARG_PLATE))
 
-            //val plateNumber = "AA111AA"
-
+            // val plateNumber = "AA111AA"
 
             DetailScreen(
-                viewModel = assistedViewModel {
-                    DetailViewModel.provideFactory(
-                        detailViewModelFactory(), plateNumber
-                    )
-                }, coroutineDispatcher = dispatcherProvider, appState = appState
+                viewModel =
+                    assistedViewModel {
+                        DetailViewModel.provideFactory(
+                            detailViewModelFactory(),
+                            plateNumber,
+                        )
+                    },
+                coroutineDispatcher = dispatcherProvider,
+                appState = appState,
             )
         }
-
 
         composable(Screen.Settings.route) {
             SettingsScreen(
                 viewModel = hiltViewModel(),
-                appState = appState
+                appState = appState,
             )
         }
 
         composable(Screen.help.route) {
             HelpScreen(
-                appState = appState
+                appState = appState,
             )
         }
     }
 }
-
 
 @Stable
 class AppState(
@@ -96,15 +101,11 @@ class AppState(
     val currentDestination: NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
 
-    fun navigateToVehicleDetail(plate: String) =
-        navController.navigate(Screen.VehicleDetail.route(plate))
+    fun navigateToVehicleDetail(plate: String) = navController.navigate(Screen.VehicleDetail.route(plate))
 
-    fun navigateToSettings() =
-        navController.navigate(Screen.Settings.route)
+    fun navigateToSettings() = navController.navigate(Screen.Settings.route)
 
-    fun navToHelp() =
-        navController.navigate(Screen.help.route)
-
+    fun navToHelp() = navController.navigate(Screen.help.route)
 
     fun navigateToHome() {
         navController.navigate(Screen.Home.route) {
@@ -119,7 +120,6 @@ class AppState(
         navController.navigateUp()
     }
 
-
     fun addOnDestinationChangedListener(callback: NavController.OnDestinationChangedListener) {
         navController.addOnDestinationChangedListener(callback)
     }
@@ -128,4 +128,3 @@ class AppState(
         navController.removeOnDestinationChangedListener(callback)
     }
 }
-

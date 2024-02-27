@@ -21,7 +21,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -44,10 +43,11 @@ class MainActivity : ComponentActivity() {
             // A surface container using the 'background' color from the theme
             Surface(
                 color = MaterialTheme.colorScheme.background,
-                modifier = Modifier
-                    .fillMaxSize()
+                modifier =
+                    Modifier
+                        .fillMaxSize(),
             ) {
-                Box() {
+                Box {
                     AppNavigation(coroutineDispatcher)
                 }
             }

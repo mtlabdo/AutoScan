@@ -5,9 +5,10 @@ plugins {
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.ksp) apply false
-    id("com.google.gms.google-services") version "4.4.1" apply false
-    id("com.google.firebase.crashlytics") version "2.9.9" apply false
-
+    alias(libs.plugins.google.gms) apply false
+    alias(libs.plugins.firebase.crashlytics) apply false
+    alias(libs.plugins.ktlint) apply false
+    alias(libs.plugins.detekt) apply false
 }
 
 buildscript {

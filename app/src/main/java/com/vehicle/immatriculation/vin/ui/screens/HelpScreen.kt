@@ -21,22 +21,22 @@ import com.vehicle.immatriculation.vin.navigation.AppState
 import com.vehicle.immatriculation.vin.ui.widget.BackUiComposable
 import com.vehicle.immatriculation.vin.utils.Const
 
-
 @Composable
 fun HelpScreen(appState: AppState) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(16.dp),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp, start = 0.dp, end = 16.dp, bottom = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp, start = 0.dp, end = 16.dp, bottom = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             BackUiComposable {
                 appState.onBackClick()
@@ -55,7 +55,7 @@ fun HelpScreen(appState: AppState) {
         Text(
             text = "Bienvenue dans l'aide de l'application",
             style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(bottom = 16.dp),
         )
         LazyColumn {
             items(helpItems) { helpItem ->
@@ -65,40 +65,43 @@ fun HelpScreen(appState: AppState) {
     }
 }
 
-
 @Composable
 fun HelpItemCard(helpItem: HelpItem) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp) // Légère augmentation de l'élévation pour plus de profondeur
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp), // Légère augmentation de l'élévation pour plus de profondeur
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(16.dp),
         ) {
             Text(
                 text = helpItem.title,
                 style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(bottom = 8.dp)
+                modifier = Modifier.padding(bottom = 8.dp),
             )
             Text(
-                text = helpItem.description, style = MaterialTheme.typography.titleMedium
+                text = helpItem.description,
+                style = MaterialTheme.typography.titleMedium,
             )
 
             helpItem.image?.let {
                 Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(shape = CircleShape),
-                    contentAlignment = Alignment.CenterStart
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .clip(shape = CircleShape),
+                    contentAlignment = Alignment.CenterStart,
                 ) {
                     Image(
                         painter = painterResource(id = it),
                         contentDescription = null,
-                        modifier = Modifier
-                            .clip(shape = CircleShape)
-                            .height(100.dp)
+                        modifier =
+                            Modifier
+                                .clip(shape = CircleShape)
+                                .height(100.dp),
                     )
                 }
             }
@@ -106,18 +109,25 @@ fun HelpItemCard(helpItem: HelpItem) {
     }
 }
 
-data class HelpItem(val title: String, val description: String, @DrawableRes val image: Int? = null)
-
-val helpItems = listOf(
-    HelpItem(
-        title = "Comment utiliser la fonction de recherche ?",
-        description = "Pour utiliser la fonction de recherche, entrez le numéro de plaque que vous souhaitez rechercher dans la barre de recherche située en haut de l'écran d'accueil.",
-        image = R.drawable.example_search_plate
-    ), HelpItem(
-        title = "Supprimer l'historique de recherche",
-        description = "Pour supprimer un élément de l'historique de recherche, appuyez sur l'icône de corbeille à côté de l'élément que vous souhaitez supprimer."
-    ), HelpItem(
-        title = "Besoin d'aide supplémentaire ?",
-        description = "Si vous avez besoin d'aide supplémentaire ou si vous rencontrez des problèmes avec l'application, n'hésitez pas à nous contacter via l'adresse mail suivante : ${Const.HELP_MAIL}"
-    )
+data class HelpItem(
+    val title: String,
+    val description: String,
+    @DrawableRes val image: Int? = null,
 )
+
+val helpItems =
+    listOf(
+        HelpItem(
+            title = "Comment utiliser la fonction de recherche ?",
+            description = "Pour utiliser la fonction de recherche, entrez le numéro de plaque que vous souhaitez rechercher dans la barre de recherche située en haut de l'écran d'accueil.",
+            image = R.drawable.example_search_plate,
+        ),
+        HelpItem(
+            title = "Supprimer l'historique de recherche",
+            description = "Pour supprimer un élément de l'historique de recherche, appuyez sur l'icône de corbeille à côté de l'élément que vous souhaitez supprimer.",
+        ),
+        HelpItem(
+            title = "Besoin d'aide supplémentaire ?",
+            description = "Si vous avez besoin d'aide supplémentaire ou si vous rencontrez des problèmes avec l'application, n'hésitez pas à nous contacter via l'adresse mail suivante : ${Const.HELP_MAIL}",
+        ),
+    )

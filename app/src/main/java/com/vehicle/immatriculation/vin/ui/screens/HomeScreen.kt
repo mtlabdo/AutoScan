@@ -1,9 +1,7 @@
 import android.view.ViewTreeObserver
-
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.History
@@ -21,7 +19,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,10 +31,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-
+import com.vehicle.immatriculation.vin.R
 import com.vehicle.immatriculation.vin.dispatcher.DispatcherProvider
 import com.vehicle.immatriculation.vin.model.History
-import com.vehicle.immatriculation.vin.R
 import com.vehicle.immatriculation.vin.navigation.AppState
 import com.vehicle.immatriculation.vin.ui.widget.LoadingIndicator
 import com.vehicle.immatriculation.vin.ui.widget.PlateWidget
@@ -53,13 +49,13 @@ import kotlinx.coroutines.launch
 fun HomeScreen(
     viewModel: HomeViewModel,
     coroutineDispatcher: DispatcherProvider,
-    appState: AppState
+    appState: AppState,
 ) {
-
     DisposableEffect(Unit) {
-        val callback = NavController.OnDestinationChangedListener { _, _, _ ->
-            viewModel.getHistory() // Refresh data when navigating back
-        }
+        val callback =
+            NavController.OnDestinationChangedListener { _, _, _ ->
+                viewModel.getHistory() // Refresh data when navigating back
+            }
         appState.addOnDestinationChangedListener(callback)
         onDispose {
             appState.removeOnDestinationChangedListener(callback)
@@ -71,21 +67,21 @@ fun HomeScreen(
             topBar = { TopBar(appState) },
             content = { padding ->
                 Column(
-                    modifier = Modifier
-                        .padding(padding)
-                        .fillMaxHeight()
+                    modifier =
+                        Modifier
+                            .padding(padding)
+                            .fillMaxHeight(),
                 ) { HomeScreenContent(viewModel, coroutineDispatcher, appState) }
-            }
+            },
         )
     }
 }
-
 
 @Composable
 fun HomeScreenContent(
     viewModel: HomeViewModel,
     coroutineDispatcher: DispatcherProvider,
-    appState: AppState
+    appState: AppState,
 ) {
     var searchText by remember { mutableStateOf("") }
     var isSearchBarFocused by remember { mutableStateOf(false) }
@@ -95,11 +91,13 @@ fun HomeScreenContent(
     val view = LocalView.current
     val viewTreeObserver = view.viewTreeObserver
     DisposableEffect(viewTreeObserver) {
-        val listener = ViewTreeObserver.OnGlobalLayoutListener {
-            val isKeyboardOpen = ViewCompat.getRootWindowInsets(view)
-                ?.isVisible(WindowInsetsCompat.Type.ime()) ?: true
-            isSearchBarFocused = isKeyboardOpen
-        }
+        val listener =
+            ViewTreeObserver.OnGlobalLayoutListener {
+                val isKeyboardOpen =
+                    ViewCompat.getRootWindowInsets(view)
+                        ?.isVisible(WindowInsetsCompat.Type.ime()) ?: true
+                isSearchBarFocused = isKeyboardOpen
+            }
 
         viewTreeObserver.addOnGlobalLayoutListener(listener)
         onDispose {
@@ -109,13 +107,14 @@ fun HomeScreenContent(
 
     val uiState by viewModel.viewState.collectAsStateWithLifecycle(
         initialValue = HomeState.Loading,
-        context = coroutineDispatcher.main
+        context = coroutineDispatcher.main,
     )
 
     Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxHeight()
+        modifier =
+            Modifier
+                .padding(16.dp)
+                .fillMaxHeight(),
     ) { // Remplir la hauteur disponible
 
         if (!isSearchBarFocused) {
@@ -139,8 +138,8 @@ fun HomeScreenContent(
                 if (searchText.isNotBlank()) {
                     searchText = ""
                 }
-            })
-
+            },
+        )
 
         Spacer(modifier = Modifier.height(12.dp)) // Espace fixe entre SearchingBar et ActionsSearch
         ActionsSearch(searchText, snackbarHostState) {
@@ -165,9 +164,9 @@ fun HomeScreenContent(
                         Text(
                             context.getString(R.string.search_history_title),
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.W700),
-                            modifier = Modifier.padding(bottom = 8.dp)
+                            modifier = Modifier.padding(bottom = 8.dp),
                         )
-                        LazyColumn() {
+                        LazyColumn {
                             items(count = successState.historyList.size) { index ->
                                 val invertedIndex = successState.historyList.size - 1 - index
                                 SearchHistoryItem(successState.historyList[invertedIndex]) { plateNumber ->
@@ -180,43 +179,56 @@ fun HomeScreenContent(
 
                 is HomeState.Error -> {
                     val errorState = uiState as HomeState.Error
-                    //ErrorText(errorState.error)
+                    // ErrorText(errorState.error)
                 }
-
             }
         }
     }
 }
 
 @Composable
-fun SearchHistoryItem(historyItem: History, onDelete: (Int) -> Unit) {
+fun SearchHistoryItem(
+    historyItem: History,
+    onDelete: (Int) -> Unit,
+) {
     val context = LocalContext.current // To access string resources
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(Icons.Filled.History, contentDescription = context.getString(R.string.search_history_title), modifier = Modifier.padding(horizontal = 8.dp))
-        Text(historyItem.plateNumber, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f).padding(horizontal = 8.dp))
+        Icon(
+            Icons.Filled.History,
+            contentDescription = context.getString(R.string.search_history_title),
+            modifier = Modifier.padding(horizontal = 8.dp),
+        )
+        Text(
+            historyItem.plateNumber,
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.weight(1f).padding(horizontal = 8.dp),
+        )
         IconButton(onClick = { onDelete(historyItem.id) }) {
             Icon(Icons.Filled.Delete, contentDescription = context.getString(R.string.delete_action))
         }
     }
 }
+
 @Composable
 fun ActionsSearch(
     searchText: String,
     snackbarHostState: SnackbarHostState,
-    onSearch: () -> Unit
+    onSearch: () -> Unit,
 ) {
     val context = LocalContext.current // To access string resources
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp), // Add padding around the row for better spacing
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(16.dp), // Add padding around the row for better spacing
         horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Button(
             onClick = {
@@ -224,7 +236,7 @@ fun ActionsSearch(
                     CoroutineScope(Dispatchers.Main).launch {
                         snackbarHostState.showSnackbar(
                             message = context.getString(R.string.search_plate_hint),
-                            duration = SnackbarDuration.Short
+                            duration = SnackbarDuration.Short,
                         )
                     }
                 } else {
@@ -232,7 +244,7 @@ fun ActionsSearch(
                 }
             },
             // Styling remains the same
-            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
         ) {
             Icon(Icons.Filled.Search, contentDescription = context.getString(R.string.search_action), tint = Color.White)
             Spacer(Modifier.width(8.dp))

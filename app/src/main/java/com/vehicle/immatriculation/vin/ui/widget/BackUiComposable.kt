@@ -17,29 +17,32 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+
 @Composable
 fun BackUiComposable(onBackClicked: () -> Unit) {
     Card(
-        modifier = Modifier
-            .width(52.dp)
-            .height(52.dp), // Ajustez le padding selon vos besoins
+        modifier =
+            Modifier
+                .width(52.dp)
+                .height(52.dp), // Ajustez le padding selon vos besoins
         shape = CardDefaults.outlinedShape, // Utilisez RectangleShape pour une CardView rectangulaire
-        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp), // Ajustez le padding pour positionner correctement l'icône à l'intérieur de la Card
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(8.dp), // Ajustez le padding pour positionner correctement l'icône à l'intérieur de la Card
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.Center,
         ) {
             IconButton(
                 onClick = { onBackClicked() },
-                modifier = Modifier.size(32.dp) // Ajustez la taille de l'icône si nécessaire
+                modifier = Modifier.size(32.dp), // Ajustez la taille de l'icône si nécessaire
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Retour"
+                    contentDescription = "Retour",
                 )
             }
         }

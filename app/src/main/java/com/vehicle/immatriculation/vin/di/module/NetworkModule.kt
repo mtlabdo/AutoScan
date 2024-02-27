@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import com.vehicle.immatriculation.vin.BuildConfig
 import com.vehicle.immatriculation.vin.connectivity.ConnectionDataState
+import com.vehicle.immatriculation.vin.data.Constant
 import com.vehicle.immatriculation.vin.data.remote.api.ApiInterface
 import com.vehicle.immatriculation.vin.data.remote.retrofit.RetrofitService
 import com.vehicle.immatriculation.vin.di.BaseUrl
@@ -22,17 +23,16 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
-
     @Provides
     @Singleton
-    fun provideConnectivityManager(@ApplicationContext context: Context): ConnectivityManager {
+    fun provideConnectivityManager(
+        @ApplicationContext context: Context,
+    ): ConnectivityManager {
         return context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
 
     @Provides
-    fun providesConnectionState(
-        connectivityManager: ConnectivityManager,
-    ): ConnectionDataState =
+    fun providesConnectionState(connectivityManager: ConnectivityManager): ConnectionDataState =
         ConnectionDataSourceImpl(connectivityManager, MainScope())
 
     @Singleton
@@ -41,30 +41,28 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideHttpClient(
-        httpLoggingInterceptor: HttpLoggingInterceptor
-    ) =
-        RetrofitService.getHttpClient(httpLoggingInterceptor)
+    fun provideHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor) = RetrofitService.getHttpClient(httpLoggingInterceptor)
 
     @Provides
     @Singleton
     fun provideApiNetworkService(
         @BaseUrl baseUrl: String,
         okHttpClient: OkHttpClient,
-        gsonConverterFactory: GsonConverterFactory
+        gsonConverterFactory: GsonConverterFactory,
     ): ApiInterface {
         return RetrofitService.getRetrofit<ApiInterface>(
-            baseUrl,
+            Constant.API_BASE_URL,
             okHttpClient,
-            gsonConverterFactory
+            gsonConverterFactory,
         )
     }
 
     @Provides
     @Singleton
-    fun provideHttpLoggingInterceptor() = HttpLoggingInterceptor().apply {
-        if (BuildConfig.DEBUG) {
-            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+    fun provideHttpLoggingInterceptor() =
+        HttpLoggingInterceptor().apply {
+            if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+            }
         }
-    }
 }

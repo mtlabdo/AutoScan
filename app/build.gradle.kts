@@ -4,8 +4,10 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.hilt)
     id(libs.plugins.ksp.get().pluginId)
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
+    alias(libs.plugins.google.gms)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.ktlint)
+    alias(libs.plugins.detekt)
 }
 
 android {
@@ -16,8 +18,9 @@ android {
         applicationId = "com.vehicle.immatriculation.vin"
         minSdk = 23
         targetSdk = 34
-        versionCode = 25
-        versionName = "2.5"
+        versionCode = 26
+        versionName = "2.6"
+        multiDexEnabled = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -36,13 +39,7 @@ android {
         compose = true
     }
     composeOptions {
-    }
-    composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
-    }
-
-    testOptions {
-        unitTests.isIncludeAndroidResources = true
     }
 
     packaging {
@@ -57,33 +54,31 @@ android {
             storePassword = System.getenv("KEYSTORE_PASSWORD")
             keyAlias = System.getenv("KEY_ALIAS")
             keyPassword = System.getenv("KEY_PASSWORD")
-
-            // Logging debug information
-            project.logger.debug("my debug KEYSTORE_PASSWORD: ${System.getenv("KEYSTORE_PASSWORD")}")
-            project.logger.debug("my debug KEY_ALIAS: ${System.getenv("KEY_ALIAS")}")
-            project.logger.debug("my debug KEY_PASSWORD: ${System.getenv("KEY_PASSWORD")}")
-            project.logger.debug("my debug KEYSTORE_BASE64: ${System.getenv("KEYSTORE_BASE64")}")
         }
     }
 
-
     buildTypes {
         debug {
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            isMinifyEnabled = false
         }
         release {
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
+}
+
+ktlint {
+    version.set("0.49.1")
+    android.set(true)
+}
+
+detekt {
+    config.setFrom("$projectDir/../detekt.yml")
 }
 
 dependencies {
@@ -96,7 +91,6 @@ dependencies {
 
     // data Module
     implementation(projects.data)
-
 
     implementation(libs.lifecycle.runtime.ktx)
     implementation(platform(libs.compose.bom))
@@ -137,7 +131,6 @@ dependencies {
     implementation(libs.coil.compose)
 
     // firebase
-
     implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
     implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
     implementation("com.google.firebase:firebase-crashlytics")
@@ -148,7 +141,6 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.kotlin.test.junit)
 
-
     testImplementation(libs.kotlinx.coroutines.test.v152)
 
     testImplementation(libs.androidx.core.testing)
@@ -158,5 +150,4 @@ dependencies {
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.test.manifest)
-
 }

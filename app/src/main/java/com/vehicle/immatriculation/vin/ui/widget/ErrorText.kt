@@ -15,8 +15,9 @@ fun ErrorText(error: String) {
         text = error,
         color = Color.Red,
         textAlign = TextAlign.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
     )
 }

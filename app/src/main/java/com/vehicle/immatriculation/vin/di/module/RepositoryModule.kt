@@ -10,10 +10,9 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
-
-/*    @Binds
+    /*    @Binds
     abstract fun vehicleRepository(recipesRepository: VehicleRepositoryImpl): VehicleRepository
-    */
+     */
     @Binds
     abstract fun vehicleRepository(recipesRepository: VehicleRepositoryImpl): VehicleRepository
 }
