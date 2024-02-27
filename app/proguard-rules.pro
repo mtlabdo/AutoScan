@@ -37,6 +37,10 @@
 -keep interface okhttp3.** { *; }
 -dontwarn okhttp3.**
 
+# Ignore toutes les règles d'obfuscation et de minification
+-dontshrink
+-dontoptimize
+-dontobfuscate
 
 
 # Conserve toutes les classes, méthodes et champs
