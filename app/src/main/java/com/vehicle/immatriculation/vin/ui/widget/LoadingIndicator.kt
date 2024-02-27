@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 fun LoadingIndicator() {
     Box(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         CircularProgressIndicator(modifier = Modifier.size(50.dp))
     }

@@ -45,50 +45,45 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.vehicle.immatriculation.vin.R
+import com.vehicle.immatriculation.vin.dispatcher.DispatcherProvider
+import com.vehicle.immatriculation.vin.model.Detail
 import com.vehicle.immatriculation.vin.navigation.AppState
 import com.vehicle.immatriculation.vin.ui.theme.AutoScanAppTheme
 import com.vehicle.immatriculation.vin.ui.widget.BackUiComposable
 import com.vehicle.immatriculation.vin.view.state.DetailState
 import com.vehicle.immatriculation.vin.view.viewmodel.DetailViewModel
-import com.vehicle.immatriculation.vin.dispatcher.DispatcherProvider
-import com.vehicle.immatriculation.vin.model.Detail
 import java.util.Locale
-
 
 @Composable
 fun DetailScreen(
     viewModel: DetailViewModel,
     coroutineDispatcher: DispatcherProvider,
-    appState: AppState
+    appState: AppState,
 ) {
-
-    Surface() {
+    Surface {
         Scaffold(
             content = { padding ->
                 Column(
-                    modifier = Modifier
-                        .padding(0.dp)
-                        .fillMaxHeight()
+                    modifier =
+                        Modifier
+                            .padding(0.dp)
+                            .fillMaxHeight(),
                 ) { DetailScreenContent(viewModel, coroutineDispatcher, appState) }
-            }
+            },
         )
     }
-
 }
 
 @Composable
 fun DetailScreenContent(
     viewModel: DetailViewModel,
     coroutineDispatcher: DispatcherProvider,
-    appState: AppState
+    appState: AppState,
 ) {
-
     val uiState by viewModel.viewState.collectAsStateWithLifecycle(
         initialValue = DetailState.Loading,
-        context = coroutineDispatcher.main
+        context = coroutineDispatcher.main,
     )
-
-
 
     when (uiState) {
         is DetailState.Loading -> {
@@ -107,18 +102,21 @@ fun DetailScreenContent(
             TopBarWithLogo(null) { appState.onBackClick() }
             ErrorScreen(errorState.error)
         }
-
     }
 }
 
 @Composable
-fun VehicleDetailsScreen(detail: Detail, onBackClicked: () -> Unit) {
+fun VehicleDetailsScreen(
+    detail: Detail,
+    onBackClicked: () -> Unit,
+) {
     val scrollState = rememberScrollState()
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState)
-            .padding(vertical = 8.dp, horizontal = 16.dp)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+                .padding(vertical = 8.dp, horizontal = 16.dp),
     ) {
         VehicleBasicInfoSection(detail)
         VehicleTechnicalDetailsSection(detail)
@@ -128,14 +126,18 @@ fun VehicleDetailsScreen(detail: Detail, onBackClicked: () -> Unit) {
 }
 
 @Composable
-fun TopBarWithLogo(detail: Detail?, onBackClicked: () -> Unit) {
+fun TopBarWithLogo(
+    detail: Detail?,
+    onBackClicked: () -> Unit,
+) {
     val context = LocalContext.current // Get local context to access resources
 
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         BackUiComposable {
             onBackClicked()
@@ -143,55 +145,53 @@ fun TopBarWithLogo(detail: Detail?, onBackClicked: () -> Unit) {
         Spacer(modifier = Modifier.width(16.dp))
         detail?.let {
             Column(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             ) {
                 Text(
                     text = "${detail.marque} ${detail.modele}",
                     style = MaterialTheme.typography.headlineSmall,
-
-                    )
+                )
                 detail.date1erCirFr?.let {
                     Text(
                         context.getString(R.string.first_circulation, it),
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyMedium,
                     )
                 }
             }
 
             AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .error(R.drawable.car_placeholder)
-                    .data(detail.logoMarque)
-                    .crossfade(true)
-                    .build(),
+                model =
+                    ImageRequest.Builder(LocalContext.current)
+                        .error(R.drawable.car_placeholder)
+                        .data(detail.logoMarque)
+                        .crossfade(true)
+                        .build(),
                 placeholder = painterResource(R.drawable.car_placeholder),
                 contentDescription = "Logo de la marque",
                 contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .size(72.dp)
+                modifier =
+                    Modifier
+                        .clip(CircleShape)
+                        .size(72.dp),
             )
         }
-
     }
-
-
 }
 
 @Composable
 fun VehicleBasicInfoSection(detail: Detail) {
     val context = LocalContext.current // Get local context to access resources
     Card(
-        modifier = Modifier
-            .fillMaxWidth(),
+        modifier =
+            Modifier
+                .fillMaxWidth(),
         shape = RoundedCornerShape(12.dp), // Bords arrondis pour la Card
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp) // Légère augmentation de l'élévation pour plus de profondeur
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp), // Légère augmentation de l'élévation pour plus de profondeur
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-
             TitleSection(
                 title = context.getString(R.string.basic_information),
-                icon = R.drawable.ic_infos_base
+                icon = R.drawable.ic_infos_base,
             )
             Spacer(modifier = Modifier.height(16.dp)) // Espace après le titre
 
@@ -225,15 +225,16 @@ fun VehicleTechnicalDetailsSection(detail: Detail) {
     val context = LocalContext.current // Get local context to access resources
 
     Card(
-        modifier = Modifier
-            .padding(vertical = 8.dp)
-            .fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp) // Définit l'élévation de la Card
+        modifier =
+            Modifier
+                .padding(vertical = 8.dp)
+                .fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp), // Définit l'élévation de la Card
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             TitleSection(
                 title = context.getString(R.string.technical_information),
-                icon = R.drawable.ic_info_tech
+                icon = R.drawable.ic_info_tech,
             )
             Spacer(modifier = Modifier.height(16.dp)) // Espace après le titre
             DetailItem(context.getString(R.string.fiscal_power), detail.puisFisc)
@@ -256,15 +257,16 @@ fun VehicleIdentificationSection(detail: Detail) {
     val context = LocalContext.current // Get local context to access resources
 
     Card(
-        modifier = Modifier
-            .padding(vertical = 8.dp)
-            .fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp) // Définit l'élévation de la Card
+        modifier =
+            Modifier
+                .padding(vertical = 8.dp)
+                .fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp), // Définit l'élévation de la Card
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             TitleSection(
                 title = context.getString(R.string.vehicle_identification),
-                icon = R.drawable.ic_car_id
+                icon = R.drawable.ic_car_id,
             )
             Spacer(modifier = Modifier.height(16.dp)) // Espace après le titre
             DetailItem(context.getString(R.string.genre), detail.genreVCGNGC)
@@ -291,15 +293,16 @@ fun VehicleAdditionalDetailsSection(detail: Detail) {
     val context = LocalContext.current // Get local context to access resources
 
     Card(
-        modifier = Modifier
-            .padding(vertical = 8.dp)
-            .fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp) // Définit l'élévation de la Card
+        modifier =
+            Modifier
+                .padding(vertical = 8.dp)
+                .fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp), // Définit l'élévation de la Card
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             TitleSection(
                 title = context.getString(R.string.additional_information),
-                icon = R.drawable.ic_car_plus
+                icon = R.drawable.ic_car_plus,
             )
             Spacer(modifier = Modifier.height(16.dp)) // Espace après le titre
             DetailItem(context.getString(R.string.number_of_passengers), detail.nrPassagers)
@@ -309,9 +312,11 @@ fun VehicleAdditionalDetailsSection(detail: Detail) {
     }
 }
 
-
 @Composable
-fun TitleSection(title: String, @DrawableRes icon: Int) {
+fun TitleSection(
+    title: String,
+    @DrawableRes icon: Int,
+) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Icon(
             painter = painterResource(id = icon),
@@ -326,22 +331,25 @@ fun TitleSection(title: String, @DrawableRes icon: Int) {
             fontWeight = FontWeight.Bold,
         )
     }
-
 }
 
 @Composable
-fun DetailItem(label: String, value: String?, iconId: Int? = null) {
+fun DetailItem(
+    label: String,
+    value: String?,
+    iconId: Int? = null,
+) {
     val context = LocalContext.current // Get local context to access resources
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(vertical = 8.dp)
+        modifier = Modifier.padding(vertical = 8.dp),
     ) {
         iconId?.let {
             Icon(
                 painter = painterResource(id = it),
                 contentDescription = label,
                 modifier = Modifier.size(24.dp),
-                tint = Color.Unspecified
+                tint = Color.Unspecified,
             )
             Spacer(modifier = Modifier.width(8.dp))
         }
@@ -350,12 +358,12 @@ fun DetailItem(label: String, value: String?, iconId: Int? = null) {
                 text = label,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
                 text = value ?: context.getString(R.string.not_available),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
             )
         }
     }
@@ -367,7 +375,7 @@ fun SearchPlateAnimation() {
 
     Box(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         LottieAnimation(
             composition = composition,
@@ -376,7 +384,6 @@ fun SearchPlateAnimation() {
         )
     }
 }
-
 
 @Composable
 fun ErrorScreen(errorMessage: String) {
@@ -388,12 +395,12 @@ fun ErrorScreen(errorMessage: String) {
                 composition = composition,
                 speed = 1.2f,
                 iterations = LottieConstants.IterateForever,
-                modifier = Modifier.size(240.dp) // Ajustez la taille selon vos besoins
+                modifier = Modifier.size(240.dp), // Ajustez la taille selon vos besoins
             )
             Text(
                 text = errorMessage,
                 fontSize = 18.sp,
-                modifier = Modifier.padding(top = 16.dp)
+                modifier = Modifier.padding(top = 16.dp),
             )
         }
     }
@@ -407,35 +414,35 @@ fun DefaultPreview() {
     }
 }
 
-
-private val detail = Detail(
-    immat = "CT851AA",
-    co2 = "119",
-    energie = "4",
-    energieNGC = "ESSENCE",
-    genreVCG = 1,
-    genreVCGNGC = "VP",
-    puisFisc = "4",
-    carrosserieCG = "CI",
-    marque = "FIAT",
-    modele = "PANDA",
-    date1erCirUs = "2009-06-02",
-    date1erCirFr = "02-06-2009",
-    collection = "non",
-    date30 = "1989-06-30",
-    vin = "ZFA16900001426851",
-    boiteVitesse = "M",
-    puisFiscReel = "60",
-    nrPassagers = "4",
-    nbPortes = "4",
-    typeMine = "MFT1022E4419",
-    couleur = "JAUNE CLAIR",
-    poids = "860 kg",
-    cylindres = "4",
-    sraId = "FI04139",
-    sraGroup = "27",
-    sraCommercial = "ALESSI 1.2 8V",
-    logoMarque = "https=//api.apiplaqueimmatriculation.com/logos_marques/fiat.png",
-    codeMoteur = "",
-    kType = "17628"
-)
+private val detail =
+    Detail(
+        immat = "CT851AA",
+        co2 = "119",
+        energie = "4",
+        energieNGC = "ESSENCE",
+        genreVCG = 1,
+        genreVCGNGC = "VP",
+        puisFisc = "4",
+        carrosserieCG = "CI",
+        marque = "FIAT",
+        modele = "PANDA",
+        date1erCirUs = "2009-06-02",
+        date1erCirFr = "02-06-2009",
+        collection = "non",
+        date30 = "1989-06-30",
+        vin = "ZFA16900001426851",
+        boiteVitesse = "M",
+        puisFiscReel = "60",
+        nrPassagers = "4",
+        nbPortes = "4",
+        typeMine = "MFT1022E4419",
+        couleur = "JAUNE CLAIR",
+        poids = "860 kg",
+        cylindres = "4",
+        sraId = "FI04139",
+        sraGroup = "27",
+        sraCommercial = "ALESSI 1.2 8V",
+        logoMarque = "https=//api.apiplaqueimmatriculation.com/logos_marques/fiat.png",
+        codeMoteur = "",
+        kType = "17628",
+    )

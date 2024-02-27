@@ -1,7 +1,6 @@
 package com.vehicle.immatriculation.vin.ui
 
 sealed class Screen(val route: String, val name: String) {
-
     object Splash : Screen("splash", "Splash")
 
     object Home : Screen("home", "Home")

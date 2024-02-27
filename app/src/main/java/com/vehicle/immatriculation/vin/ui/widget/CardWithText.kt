@@ -29,25 +29,28 @@ fun CardWithTextView(
     onClick: () -> Unit,
 ) {
     Card(
-        modifier = modifier
-            .wrapContentSize()
-            .padding(10.dp)
-            .clickable(onClick = onClick),
+        modifier =
+            modifier
+                .wrapContentSize()
+                .padding(10.dp)
+                .clickable(onClick = onClick),
         shape = RoundedCornerShape(10.dp),
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp),
-            verticalAlignment = Alignment.CenterVertically
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 painter = painterResource(id = icon),
                 contentDescription = null,
                 tint = Color.Red,
-                modifier = Modifier
-                    .size(24.dp)
-                    .padding(end = 10.dp)
+                modifier =
+                    Modifier
+                        .size(24.dp)
+                        .padding(end = 10.dp),
             )
 
             Text(
@@ -66,7 +69,7 @@ fun CardWithTextViewPreview() {
     CardWithTextView(
         modifier = Modifier.fillMaxWidth(),
         label = "Afficher le detail",
-        onClick = {  },
-        icon = R.drawable.ic_menu_more
+        onClick = { },
+        icon = R.drawable.ic_menu_more,
     )
 }

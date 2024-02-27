@@ -1,14 +1,12 @@
 package com.vehicle.immatriculation.vin.ui.dialog
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.os.LocaleListCompat
 import com.vehicle.immatriculation.vin.R
@@ -27,7 +25,7 @@ fun LanguageDialog(
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         LanguagePicker(
             context.getString(R.string.select_language), // Utiliser la chaîne de ressources
@@ -37,7 +35,7 @@ fun LanguageDialog(
                 onApply(it)
                 AppCompatDelegate.setApplicationLocales(LocaleListCompat.create(Locale(it)))
             },
-            currentLanguage = context.getString(R.string.language_code).lowercase()
+            currentLanguage = context.getString(R.string.language_code).lowercase(),
         )
     }
 }

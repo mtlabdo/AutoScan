@@ -17,38 +17,39 @@ class ConnectionDataSourceImpl(
     private val connectivityManager: ConnectivityManager,
     private val coroutineScope: CoroutineScope,
 ) : ConnectionDataState {
-
     private val networkRequestProvider: () -> NetworkRequest = {
         NetworkRequest.Builder().addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET).build()
     }
 
     private val stateFlow = MutableStateFlow<ConnectionState>(ConnectionState.Unset)
 
-    private val networkCallback = object : ConnectivityManager.NetworkCallback() {
-        override fun onAvailable(network: Network) {
-            emitConnectionUpdate(ConnectionState.Available)
-        }
+    private val networkCallback =
+        object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                emitConnectionUpdate(ConnectionState.Available)
+            }
 
+            override fun onLost(network: Network) {
+                emitConnectionUpdate(
+                    if (isConnected()) {
+                        ConnectionState.Available
+                    } else {
+                        ConnectionState.Unavailable
+                    },
+                )
+            }
 
-        override fun onLost(network: Network) {
-            emitConnectionUpdate(
-                if (isConnected()) {
-                    ConnectionState.Available
+            private fun isConnected() =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    val activeNetwork = connectivityManager.activeNetwork
+                    connectivityManager.getNetworkCapabilities(activeNetwork)
+                        ?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
                 } else {
-                    ConnectionState.Unavailable
+                    @Suppress("DEPRECATION")
+                    val activeNetworkInfo = connectivityManager.activeNetworkInfo
+                    @Suppress("DEPRECATION") activeNetworkInfo?.isConnected == true
                 }
-            )
         }
-
-        private fun isConnected() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val activeNetwork = connectivityManager.activeNetwork
-            connectivityManager.getNetworkCapabilities(activeNetwork)
-                ?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
-        } else {
-            @Suppress("DEPRECATION") val activeNetworkInfo = connectivityManager.activeNetworkInfo
-            @Suppress("DEPRECATION") activeNetworkInfo?.isConnected == true
-        }
-    }
 
     private fun emitConnectionUpdate(connectionState: ConnectionState) {
         coroutineScope.launch(Dispatchers.IO) {

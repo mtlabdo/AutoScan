@@ -51,7 +51,6 @@ fun SplashScreen(appState: AppState?) {
     }
 }
 
-
 @Composable
 fun LoadingScreen() {
     val composition by rememberLottieComposition(LottieCompositionSpec.Asset("loading_splash.json"))
@@ -62,14 +61,14 @@ fun LoadingScreen() {
                 composition = composition,
                 speed = 1.2f,
                 iterations = LottieConstants.IterateForever,
-                modifier = Modifier.size(240.dp) // Ajustez la taille selon vos besoins
+                modifier = Modifier.size(240.dp), // Ajustez la taille selon vos besoins
             )
 
             Text(
                 text = LocalContext.current.getString(R.string.app_name),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(top = 16.dp)
+                modifier = Modifier.padding(top = 16.dp),
             )
 
             Text(
@@ -88,4 +87,3 @@ fun DefaultPreview() {
         SplashScreen(null)
     }
 }
-

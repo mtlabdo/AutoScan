@@ -44,49 +44,50 @@ import androidx.compose.ui.unit.sp
 import com.vehicle.immatriculation.vin.R
 import com.vehicle.immatriculation.vin.ui.theme.AutoScanAppTheme
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlateWidget(
     plateText: String,
     onFocusChange: (Boolean) -> Unit = {},
     onSearchTextChanged: (String) -> Unit = {},
-    onSearch: () -> Unit = {}
+    onSearch: () -> Unit = {},
 ) {
-
     var isFocused by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(72.dp)
-            .padding(horizontal = 8.dp, vertical = 4.dp), // Ajustez selon vos besoins
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(72.dp)
+                .padding(horizontal = 8.dp, vertical = 4.dp), // Ajustez selon vos besoins
         shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp) // Définit l'élévation de la Card
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp), // Définit l'élévation de la Card
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .background(Color.White, RoundedCornerShape(8.dp))
-                .clip(RoundedCornerShape(8.dp))
-                .border(1.dp, Color(0xFF27449D), RoundedCornerShape(8.dp))
-                .fillMaxWidth()
-                .padding(horizontal = 0.dp)
+            modifier =
+                Modifier
+                    .background(Color.White, RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(8.dp))
+                    .border(1.dp, Color(0xFF27449D), RoundedCornerShape(8.dp))
+                    .fillMaxWidth()
+                    .padding(horizontal = 0.dp),
         ) {
             // Partie gauche pour l'icône
             Box(
-                modifier = Modifier
-                    .background(Color(0xFF27449D))
-                    .fillMaxHeight()
-                    .padding(4.dp),
-                contentAlignment = Alignment.Center
+                modifier =
+                    Modifier
+                        .background(Color(0xFF27449D))
+                        .fillMaxHeight()
+                        .padding(4.dp),
+                contentAlignment = Alignment.Center,
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.union_eur),
                     contentDescription = "EU Flag",
                     modifier = Modifier.size(28.dp),
-                    tint = Color(0xFFFFDD00)
+                    tint = Color(0xFFFFDD00),
                 )
             }
 
@@ -97,53 +98,62 @@ fun PlateWidget(
                     onSearchTextChanged(newText.uppercase()) // Convertir en majuscules
                 },
                 singleLine = true,
-                textStyle = TextStyle(
-                    fontSize = 24.sp, // Taille plus grande pour un effet titre
-                    fontWeight = FontWeight.Bold, // Gras pour l'importance
-                    color = Color.Black,
-                    textAlign = TextAlign.Center,
-                ),
-                label = if (!isFocused) { // Afficher le label seulement si le champ n'est pas en focus
-                    {
-                        Text(
-                            "AA000AA",
-                            color = Color.LightGray,
-                            style = MaterialTheme.typography.headlineLarge,
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center,// Centrer le label
-                            modifier = Modifier
-                                .padding(end = 8.dp)
-                                .fillMaxWidth()
-                        )
-                    }
-                } else null,
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent,
-                    cursorColor = Color(0xFF27449D)
-                ),
+                textStyle =
+                    TextStyle(
+                        fontSize = 24.sp, // Taille plus grande pour un effet titre
+                        fontWeight = FontWeight.Bold, // Gras pour l'importance
+                        color = Color.Black,
+                        textAlign = TextAlign.Center,
+                    ),
+                label =
+                    if (!isFocused) { // Afficher le label seulement si le champ n'est pas en focus
+                        {
+                            Text(
+                                "AA000AA",
+                                color = Color.LightGray,
+                                style = MaterialTheme.typography.headlineLarge,
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center, // Centrer le label
+                                modifier =
+                                    Modifier
+                                        .padding(end = 8.dp)
+                                        .fillMaxWidth(),
+                            )
+                        }
+                    } else {
+                        null
+                    },
+                colors =
+                    TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = Color.Transparent,
+                        unfocusedBorderColor = Color.Transparent,
+                        cursorColor = Color(0xFF27449D),
+                    ),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                keyboardActions = KeyboardActions(onSearch = {
-                    onSearch()
-                    keyboardController?.hide()
-                }),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .align(Alignment.CenterVertically)
-                    .padding(end = 8.dp)
-                    .onFocusChanged { focusState ->
-                        isFocused = focusState.isFocused
-                        onFocusChange(isFocused)
-                    }
+                keyboardActions =
+                    KeyboardActions(onSearch = {
+                        onSearch()
+                        keyboardController?.hide()
+                    }),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .align(Alignment.CenterVertically)
+                        .padding(end = 8.dp)
+                        .onFocusChanged { focusState ->
+                            isFocused = focusState.isFocused
+                            onFocusChange(isFocused)
+                        },
             )
 
             // Partie droite vide pour équilibrer la mise en page
             Spacer(
-                modifier = Modifier
-                    .background(Color(0xFF27449D))
-                    .fillMaxHeight()
-                    .width(28.dp)
+                modifier =
+                    Modifier
+                        .background(Color(0xFF27449D))
+                        .fillMaxHeight()
+                        .width(28.dp),
             )
         }
     }

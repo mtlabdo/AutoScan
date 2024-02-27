@@ -4,10 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.UiModeManager
 import android.content.Context
-import androidx.compose.material.icons.sharp.KeyboardArrowRight
-import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,10 +11,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.sharp.KeyboardArrowRight
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -42,16 +41,16 @@ import com.vehicle.immatriculation.vin.ui.theme.ThemePreference
 import com.vehicle.immatriculation.vin.ui.theme.loadThemePreference
 import com.vehicle.immatriculation.vin.ui.theme.saveThemePreference
 import com.vehicle.immatriculation.vin.ui.widget.BackUiComposable
+import com.vehicle.immatriculation.vin.utils.Const
 import com.vehicle.immatriculation.vin.utils.openUrl
 import com.vehicle.immatriculation.vin.view.state.CardUiState
 import com.vehicle.immatriculation.vin.view.state.SettingsState
 import com.vehicle.immatriculation.vin.view.viewmodel.SettingViewModel
-import com.vehicle.immatriculation.vin.utils.Const
-
 
 @Composable
 fun SettingsScreen(
-    viewModel: SettingViewModel, appState: AppState
+    viewModel: SettingViewModel,
+    appState: AppState,
 ) {
     val state by viewModel.state.collectAsState()
     SettingContent(state, appState)
@@ -72,17 +71,17 @@ fun SettingContent(
     val context = LocalContext.current
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 25.dp)
-
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(horizontal = 25.dp),
     ) {
-
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp, start = 0.dp, end = 16.dp, bottom = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp, start = 0.dp, end = 16.dp, bottom = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             BackUiComposable {
                 appState.onBackClick()
@@ -99,8 +98,7 @@ fun SettingContent(
 
         Spacer(modifier = Modifier.height(24.dp))
         LazyColumn(
-            modifier = Modifier.fillMaxWidth()
-
+            modifier = Modifier.fillMaxWidth(),
         ) {
             items(uiState.settingCards) {
                 SettingCard(card = it) {
@@ -134,12 +132,14 @@ fun SettingContent(
         }
 
         if (isPickingLanguage) {
-            LanguageDialog(options = uiState.languages,
+            LanguageDialog(
+                options = uiState.languages,
                 onDismiss = { isPickingLanguage = !isPickingLanguage },
                 onApply = {
                     isPickingLanguage = !isPickingLanguage
                     (context as? Activity)?.recreate()
-                })
+                },
+            )
         }
 
         if (isAboutUs) {
@@ -151,30 +151,32 @@ fun SettingContent(
     }
 }
 
-
 @Composable
 fun DefaultBox(iconSize: Int) {
     Box(
-        contentAlignment = Alignment.CenterEnd, modifier = Modifier.clip(RoundedCornerShape(16.dp))
+        contentAlignment = Alignment.CenterEnd,
+        modifier = Modifier.clip(RoundedCornerShape(16.dp)),
     ) {
         Icon(
             imageVector = Icons.Sharp.KeyboardArrowRight,
             contentDescription = null,
-            modifier = Modifier
-                //.background(CardBackgroundColor)
-                .padding(8.dp)
-                .size(iconSize.dp)
+            modifier =
+                Modifier
+                    // .background(CardBackgroundColor)
+                    .padding(8.dp)
+                    .size(iconSize.dp),
         )
     }
 }
 
 fun switchTheme(context: Context) {
     val themePreference = loadThemePreference(context)
-    val newThemePreference = when (themePreference) {
-        ThemePreference.LIGHT -> ThemePreference.DARK
-        ThemePreference.DARK -> ThemePreference.LIGHT
-        ThemePreference.SYSTEM -> if (isSystemInDarMode(context)) ThemePreference.LIGHT else ThemePreference.DARK
-    }
+    val newThemePreference =
+        when (themePreference) {
+            ThemePreference.LIGHT -> ThemePreference.DARK
+            ThemePreference.DARK -> ThemePreference.LIGHT
+            ThemePreference.SYSTEM -> if (isSystemInDarMode(context)) ThemePreference.LIGHT else ThemePreference.DARK
+        }
 
     saveThemePreference(context, newThemePreference)
     (context as? Activity)?.recreate()
@@ -186,17 +188,25 @@ fun isSystemInDarMode(context: Context): Boolean {
 }
 
 @Composable
-fun Header(title: String, subtitle: String, modifier: Modifier = Modifier) {
+fun Header(
+    title: String,
+    subtitle: String,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.Start
+        horizontalAlignment = Alignment.Start,
     ) {
         Text(
-            text = title, fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+            text = title,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.SemiBold,
         )
         Text(
-            text = subtitle, fontSize = 14.sp, fontWeight = FontWeight.Normal
+            text = subtitle,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Normal,
         )
     }
 }
@@ -204,52 +214,57 @@ fun Header(title: String, subtitle: String, modifier: Modifier = Modifier) {
 @SuppressLint("SuspiciousIndentation")
 @Composable
 fun SettingCard(
-    card: CardUiState, clickEvent: () -> Unit
+    card: CardUiState,
+    clickEvent: () -> Unit,
 ) {
     val context = LocalContext.current
 
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-            .clickable {
-                clickEvent()
-            },
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
+                .clickable {
+                    clickEvent()
+                },
         shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     ) {
         Row(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
         ) {
             Box(
-                modifier = Modifier
-                    .size(45.dp)
-                    .clip(shape = CircleShape),
-                contentAlignment = Alignment.CenterStart
+                modifier =
+                    Modifier
+                        .size(45.dp)
+                        .clip(shape = CircleShape),
+                contentAlignment = Alignment.CenterStart,
             ) {
                 Image(
                     painter = painterResource(id = card.icon),
                     contentDescription = null,
-                    modifier = Modifier
-                        .clip(shape = CircleShape)
-                        .size(40.dp)
+                    modifier =
+                        Modifier
+                            .clip(shape = CircleShape)
+                            .size(40.dp),
                 )
             }
 
             Box(
-                contentAlignment = Alignment.CenterStart, modifier = Modifier.weight(1f)
+                contentAlignment = Alignment.CenterStart,
+                modifier = Modifier.weight(1f),
             ) {
                 Text(
                     text = context.getString(card.settingName),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(horizontal = 10.dp)
+                    modifier = Modifier.padding(horizontal = 10.dp),
                 )
-
             }
 
             if (card.id == 1) {
@@ -258,7 +273,7 @@ fun SettingCard(
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Normal,
                     modifier = Modifier.padding(horizontal = 10.dp),
-                    color = Color.Gray
+                    color = Color.Gray,
                 )
             }
             card.defaultBox = DefaultBox(iconSize = 25)

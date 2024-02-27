@@ -32,11 +32,12 @@ class VehicleRepositoryImpl @Inject internal constructor(
         } else if (!response?.erreur.isNullOrEmpty()) {
             DataState.Failure(ErrorHolder.Unknown(recipeDetailResponse?.data?.erreur.toString()))
         } else {
-            DataState.Failure(ErrorHolder.Unknown("Impossible de trouver les informations de la plaque suivante : $plate"))
+            //DataState.Failure(ErrorHolder.Unknown("Impossible de trouver les informations de la plaque suivante : $plate"))
+            DataState.Failure(ErrorHolder.Unknown("Impossible de trouver les informations de la plaque suivante : $plate {${response.toString()}}}"))
         }
         emit(dataState)
     }.catch {
-        emit(DataState.Failure(ErrorHolder.Unknown("Impossible de trouver les informations de la plaque suivante : $plate")))
+        emit(DataState.Failure(ErrorHolder.Unknown("Impossible de trouver les informations de la plaque suivante : $plate {${it.printStackTrace().toString()}}")))
     }
 
     override fun getHistory(): Flow<DataState<List<History>>> = flow {

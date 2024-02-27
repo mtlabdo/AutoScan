@@ -14,39 +14,38 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
+private val DarkColorScheme =
+    darkColorScheme(
+        primary = primary,
+        background = backgroundNight,
+        surface = surfaceNight,
+        onBackground = white,
+        onPrimary = white,
+    )
 
-private val DarkColorScheme = darkColorScheme(
-    primary = primary,
-    background = backgroundNight,
-    surface = surfaceNight,
-    onBackground = white,
-    onPrimary = white,
-)
-
-private val LightColorScheme = lightColorScheme(
-    primary = primary,
-    background = backgroundDay,
-    surface = surfaceDay,
-    onBackground = black,
-    onPrimary = black,
-    surfaceVariant = card
-)
+private val LightColorScheme =
+    lightColorScheme(
+        primary = primary,
+        background = backgroundDay,
+        surface = surfaceDay,
+        onBackground = black,
+        onPrimary = black,
+        surfaceVariant = card,
+    )
 
 @Composable
-fun AutoScanAppTheme(
-    content: @Composable () -> Unit
-) {
-
+fun AutoScanAppTheme(content: @Composable () -> Unit) {
     val context = LocalContext.current
     val initialThemePref = loadThemePreference(context)
     val themePreference = remember { mutableStateOf(initialThemePref) }
     val isSystemDarkTheme = isSystemInDarkTheme()
 
-    val colorScheme = when (themePreference.value) {
-        ThemePreference.DARK -> DarkColorScheme
-        ThemePreference.LIGHT -> LightColorScheme
-        ThemePreference.SYSTEM -> if (isSystemDarkTheme) DarkColorScheme else LightColorScheme
-    }
+    val colorScheme =
+        when (themePreference.value) {
+            ThemePreference.DARK -> DarkColorScheme
+            ThemePreference.LIGHT -> LightColorScheme
+            ThemePreference.SYSTEM -> if (isSystemDarkTheme) DarkColorScheme else LightColorScheme
+        }
 
     val view = LocalView.current
     if (!view.isInEditMode) {
@@ -60,6 +59,6 @@ fun AutoScanAppTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
-        content = content
+        content = content,
     )
 }

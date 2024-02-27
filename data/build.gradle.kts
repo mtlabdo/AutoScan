@@ -2,6 +2,8 @@ plugins {
     id(libs.plugins.android.library.get().pluginId)
     id(libs.plugins.kotlinAndroid.get().pluginId)
     id(libs.plugins.ksp.get().pluginId)
+    alias(libs.plugins.ktlint)
+    alias(libs.plugins.detekt)
 }
 
 android {
@@ -9,7 +11,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 22
+        minSdk = 23
     }
 
     compileOptions {
@@ -21,8 +23,25 @@ android {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
 }
 
+ktlint {
+    version.set("0.49.1")
+    android.set(true)
+}
+
+detekt {
+    config.setFrom("$projectDir/../detekt.yml")
+}
 
 dependencies {
 

@@ -15,57 +15,59 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val vehicleRepository: VehicleRepository,
-    private val dispatcherProvider: DispatcherProvider
-) : BaseViewModel<HomeState>() {
+class HomeViewModel
+    @Inject
+    constructor(
+        private val vehicleRepository: VehicleRepository,
+        private val dispatcherProvider: DispatcherProvider,
+    ) : BaseViewModel<HomeState>() {
+        override val initialViewState = HomeState.Loading
 
-    override val initialViewState = HomeState.Loading
+        private var syncJob: Job? = null
 
-    private var syncJob: Job? = null
-
-    init {
-        getHistory()
-    }
-
-    fun getHistory() {
-        if (syncJob?.isActive == true) return
-        try {
-            syncJob = vehicleRepository.getHistory()
-                .distinctUntilChanged()
-                .map {
-                    it.onSuccess { plates ->
-                        updateViewState(HomeState.Success(plates))
-                    }
-                    it.onFailure { error ->
-                        updateViewState(HomeState.Error(error.message))
-                    }
-                }
-                .onStart {
-                    updateViewState(HomeState.Loading)
-                }
-                .flowOn(dispatcherProvider.io)
-                .launchIn(viewModelScope)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            updateViewState(HomeState.Error("Can not get history"))
-        }
-    }
-
-    fun deleteHistoryItem(id: Int) {
-        viewModelScope.launch(dispatcherProvider.io) {
-            vehicleRepository.deleteHistoryItem(id)
+        init {
             getHistory()
         }
-    }
 
-    fun addHistoryItem(plateNumber: String) {
-        viewModelScope.launch(dispatcherProvider.io) {
-            vehicleRepository.addHistoryItem(plateNumber)
+        fun getHistory() {
+            if (syncJob?.isActive == true) return
+            try {
+                syncJob =
+                    vehicleRepository.getHistory()
+                        .distinctUntilChanged()
+                        .map {
+                            it.onSuccess { plates ->
+                                updateViewState(HomeState.Success(plates))
+                            }
+                            it.onFailure { error ->
+                                updateViewState(HomeState.Error(error.message))
+                            }
+                        }
+                        .onStart {
+                            updateViewState(HomeState.Loading)
+                        }
+                        .flowOn(dispatcherProvider.io)
+                        .launchIn(viewModelScope)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                updateViewState(HomeState.Error("Can not get history"))
+            }
+        }
+
+        fun deleteHistoryItem(id: Int) {
+            viewModelScope.launch(dispatcherProvider.io) {
+                vehicleRepository.deleteHistoryItem(id)
+                getHistory()
+            }
+        }
+
+        fun addHistoryItem(plateNumber: String) {
+            viewModelScope.launch(dispatcherProvider.io) {
+                vehicleRepository.addHistoryItem(plateNumber)
+            }
+        }
+
+        companion object {
+            private const val TAG = "HomeViewModel"
         }
     }
-
-    companion object {
-        private const val TAG = "HomeViewModel"
-    }
-}

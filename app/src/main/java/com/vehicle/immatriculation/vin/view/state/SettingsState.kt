@@ -5,9 +5,8 @@ import com.vehicle.immatriculation.vin.ui.widget.langue.LanguageOption
 
 data class SettingsState(
     val settingCards: List<CardUiState> = emptyList(),
-    val languages: List<LanguageOption> = emptyList()
+    val languages: List<LanguageOption> = emptyList(),
 )
-
 
 data class CardUiState(
     val id: Int? = 0,
