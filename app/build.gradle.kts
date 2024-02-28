@@ -18,8 +18,8 @@ android {
         applicationId = "com.vehicle.immatriculation.vin"
         minSdk = 23
         targetSdk = 34
-        versionCode = 27
-        versionName = "2.7"
+        versionCode = 28
+        versionName = "2.8"
         multiDexEnabled = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
