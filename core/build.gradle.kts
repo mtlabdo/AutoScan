@@ -1,4 +1,3 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     id("java-library")
     alias(libs.plugins.kotlin.jvm)
@@ -7,12 +6,12 @@ plugins {
     alias(libs.plugins.detekt)
 }
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = Configurations.sourceCompatibility
+    targetCompatibility = Configurations.targetCompatibility
 }
 
 ktlint {
-    version.set("0.49.1")
+    version.set(Configurations.ktlintVerion)
     android.set(true)
 }
 

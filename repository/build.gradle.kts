@@ -8,10 +8,10 @@ plugins {
 
 android {
     namespace = "com.vehicle.immatriculation.vin.repo"
-    compileSdk = 34
+    compileSdk = Configurations.compileSdk
 
     defaultConfig {
-        minSdk = 23
+        minSdk = Configurations.minSdk
     }
 
     compileOptions {
@@ -26,16 +26,12 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
         }
     }
 }
 
 ktlint {
-    version.set("0.49.1")
+    version.set(Configurations.ktlintVerion)
     android.set(true)
 }
 

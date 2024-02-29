@@ -51,7 +51,7 @@ class NetworkModule {
         gsonConverterFactory: GsonConverterFactory,
     ): ApiInterface {
         return RetrofitService.getRetrofit<ApiInterface>(
-            Constant.API_BASE_URL,
+            baseUrl,
             okHttpClient,
             gsonConverterFactory,
         )

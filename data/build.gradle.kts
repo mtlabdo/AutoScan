@@ -4,44 +4,46 @@ plugins {
     id(libs.plugins.ksp.get().pluginId)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.google.secrets)
 }
 
 android {
     namespace = "com.vehicle.immatriculation.vin.data"
-    compileSdk = 34
+    compileSdk = Configurations.compileSdk
 
     defaultConfig {
-        minSdk = 23
+        minSdk = Configurations.minSdk
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = Configurations.sourceCompatibility
+        targetCompatibility = Configurations.targetCompatibility
     }
-
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        jvmTarget = Configurations.jvmTarget
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
         }
     }
 }
 
 ktlint {
-    version.set("0.49.1")
+    version.set(Configurations.ktlintVerion)
     android.set(true)
 }
 
 detekt {
     config.setFrom("$projectDir/../detekt.yml")
 }
+
+secrets {
+    propertiesFileName = "secrets.properties"
+    defaultPropertiesFileName = "secrets.defaults.properties"
+}
+
 
 dependencies {
 
