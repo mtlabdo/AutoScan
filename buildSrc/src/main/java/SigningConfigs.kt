@@ -4,7 +4,7 @@ object SigningConfigs {
     const val releaseName = "release"
 
     // Signing file name
-    const val storeFileName = "keystore.jks"
+    const val storeFileName = "autoScan.jks"
 
     // Github Properties
     const val storePasswordName = "KEYSTORE_PASSWORD"
