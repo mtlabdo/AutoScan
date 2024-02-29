@@ -1,25 +1,23 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.hilt)
     id(libs.plugins.ksp.get().pluginId)
-    alias(libs.plugins.google.gms)
-    alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.google.secrets)
 }
 
 android {
-    namespace = "com.vehicle.immatriculation.vin"
-    compileSdk = 34
+    namespace = Configurations.nameSpace
+    compileSdk = Configurations.compileSdk
 
     defaultConfig {
-        applicationId = "com.vehicle.immatriculation.vin"
-        minSdk = 23
-        targetSdk = 34
-        versionCode = 28
-        versionName = "2.8"
+        applicationId = Configurations.applicationId
+        minSdk = Configurations.minSdk
+        targetSdk = Configurations.targetSdk
+        versionCode = Configurations.versionCode
+        versionName = Configurations.versionName
         multiDexEnabled = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -29,18 +27,18 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = Configurations.sourceCompatibility
+        targetCompatibility = Configurations.targetCompatibility
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = Configurations.jvmTarget
     }
     buildFeatures {
         compose = true
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = Configurations.kotlinCompilerExtensionVersion
     }
 
     packaging {
@@ -50,11 +48,11 @@ android {
     }
 
     signingConfigs {
-        create("release") {
-            storeFile = file("autoScan.jks")
-            storePassword = System.getenv("KEYSTORE_PASSWORD")
-            keyAlias = System.getenv("KEY_ALIAS")
-            keyPassword = System.getenv("KEY_PASSWORD")
+        create(SigningConfigs.releaseName) {
+            storeFile = file(SigningConfigs.storeFileName)
+            storePassword = System.getenv(SigningConfigs.storePasswordName)
+            keyAlias = System.getenv(SigningConfigs.keyAliasName)
+            keyPassword = System.getenv(SigningConfigs.keyPasswordName)
         }
     }
 
@@ -63,7 +61,7 @@ android {
             isMinifyEnabled = false
         }
         release {
-            signingConfig = signingConfigs.getByName("release")
+            signingConfig = signingConfigs.getByName(SigningConfigs.releaseName)
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -74,7 +72,7 @@ android {
 }
 
 ktlint {
-    version.set("0.49.1")
+    version.set(Configurations.ktlintVerion)
     android.set(true)
 }
 
@@ -132,10 +130,9 @@ dependencies {
     implementation(libs.coil.compose)
 
     // firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
-    implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
-    implementation("com.google.firebase:firebase-crashlytics")
-    implementation("com.google.firebase:firebase-analytics")
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
 
     // Testing
     testImplementation(libs.test.mockk)
@@ -151,4 +148,14 @@ dependencies {
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.test.manifest)
+}
+
+secrets {
+    propertiesFileName = "secrets.properties"
+    defaultPropertiesFileName = "secrets.defaults.properties"
+}
+
+if (file("google-services.json").exists()) {
+    apply(plugin = libs.plugins.google.gms.get().pluginId)
+    apply(plugin = libs.plugins.firebase.crashlytics.get().pluginId)
 }

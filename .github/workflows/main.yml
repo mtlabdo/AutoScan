@@ -22,9 +22,13 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+
       # Run Tests Build
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
+      - name: Create-secrets-properties
+        run: echo rapidApiKey=${{ secrets.X_RAPID_API_KEY }} > secrets.properties
 
       # Create Bundle AAB Release
       - name: Decode keystore
