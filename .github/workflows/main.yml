@@ -66,18 +66,3 @@ jobs:
         with:
           name: app-apk
           path: app/build/outputs/apk/release/app-release.apk
-
-
-      # Build and Sign APK DEBUG
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug
-        env:
-          JAVA_OPTS: -Dorg.gradle.jvmargs=-Xmx2048m -Dorg.gradle.daemon=false -Dorg.gradle.configureondemand=false -Dkotlin.incremental=false
-
-      # Upload APK Release DEBUG
-      - name: Upload Debug APK
-        uses: actions/upload-artifact@v2
-        with:
-          name: app-debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
-
