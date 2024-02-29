@@ -1,4 +1,4 @@
-# AutoScan
+# AutoInspect
 
 AutoScan is a mobile application designed to provide comprehensive vehicle history reports quickly and reliably. Whether you're a car buyer or enthusiast, AutoScan empowers you with detailed information to make informed decisions.
 
