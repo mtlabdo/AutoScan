@@ -9,6 +9,7 @@ import androidx.room.PrimaryKey
     tableName = "history",
     indices = [Index(
         value = arrayOf("plateNumber"),
+        unique = true
     )]
 )
 data class HistoryEntity(

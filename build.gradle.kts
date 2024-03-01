@@ -9,6 +9,8 @@ plugins {
     alias(libs.plugins.firebase.crashlytics) apply false
     alias(libs.plugins.ktlint) apply false
     alias(libs.plugins.detekt) apply false
+    alias(libs.plugins.androidTest) apply false
+    alias(libs.plugins.baselineprofile) apply false
 }
 
 buildscript {

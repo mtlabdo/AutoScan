@@ -51,8 +51,9 @@ fun PlateWidget(
     onFocusChange: (Boolean) -> Unit = {},
     onSearchTextChanged: (String) -> Unit = {},
     onSearch: () -> Unit = {},
+    isFocused : Boolean = false
+
 ) {
-    var isFocused by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Card(
@@ -142,8 +143,7 @@ fun PlateWidget(
                         .align(Alignment.CenterVertically)
                         .padding(end = 8.dp)
                         .onFocusChanged { focusState ->
-                            isFocused = focusState.isFocused
-                            onFocusChange(isFocused)
+                            onFocusChange(focusState.isFocused)
                         },
             )
 

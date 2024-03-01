@@ -1,12 +1,15 @@
 package com.vehicle.immatriculation.vin.data.remote.model
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
 
+@Keep
 data class VehicleDetailNetwork(
     @SerializedName("data") val data: DetailNetwork
 )
 
+@Keep
 data class DetailNetwork(
     @SerializedName("erreur") val erreur: String? = null,
     @SerializedName("immat") val immat: String? = null,

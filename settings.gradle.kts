@@ -20,3 +20,4 @@ include(":data")
 include(":repository")
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+include(":baselineprofile")

@@ -77,4 +77,11 @@
 
     <string name="select_language">Seleccionar Idioma</string>
 
+    <string name="snitcher_release_crash_screen_title">¡Vaya! ¿Restaurar la pantalla anterior?</string>
+    <string name="snitcher_release_crash_screen_description">La aplicación se ha cerrado inesperadamente. Pedimos disculpas por las molestias. ¿Te gustaría volver al punto donde lo dejaste?</string>
+    <string name="snitcher_release_crash_screen_restore">Restaurar</string>
+    <string name="snitcher_debug_crash_screen_restore">Restaurar aplicación</string>
+    <string name="snitcher_debug_crash_screen_debug_on_ide">Depurar en el IDE</string>
+    <string name="snitcher_debug_crash_screen_stacktrace">Rastro de pila</string>
+
 </resources>

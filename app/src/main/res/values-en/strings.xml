@@ -78,4 +78,11 @@
 
     <string name="select_language">Select Language</string>
 
+    <string name="snitcher_release_crash_screen_title">Oops, Restore the previous screen?</string>
+    <string name="snitcher_release_crash_screen_description">The app crashed unexpectedly. We apologize for the inconvenience. Would you like to return to where you left off?</string>
+    <string name="snitcher_release_crash_screen_restore">Restore</string>
+    <string name="snitcher_debug_crash_screen_restore">Restore App</string>
+    <string name="snitcher_debug_crash_screen_debug_on_ide">Debug on IDE</string>
+    <string name="snitcher_debug_crash_screen_stacktrace">Stacktrace</string>
+
 </resources>

@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.sharp.KeyboardArrowRight
 import androidx.compose.material.icons.sharp.KeyboardArrowRight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -158,7 +159,7 @@ fun DefaultBox(iconSize: Int) {
         modifier = Modifier.clip(RoundedCornerShape(16.dp)),
     ) {
         Icon(
-            imageVector = Icons.Sharp.KeyboardArrowRight,
+            imageVector = Icons.AutoMirrored.Sharp.KeyboardArrowRight,
             contentDescription = null,
             modifier =
                 Modifier
