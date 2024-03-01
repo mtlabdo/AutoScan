@@ -1,4 +1,5 @@
 import android.view.ViewTreeObserver
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -68,9 +69,9 @@ fun HomeScreen(
             content = { padding ->
                 Column(
                     modifier =
-                        Modifier
-                            .padding(padding)
-                            .fillMaxHeight(),
+                    Modifier
+                        .padding(padding)
+                        .fillMaxHeight(),
                 ) { HomeScreenContent(viewModel, coroutineDispatcher, appState) }
             },
         )
@@ -87,6 +88,7 @@ fun HomeScreenContent(
     var isSearchBarFocused by remember { mutableStateOf(false) }
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current // To access string resources
+    var isFocused by remember { mutableStateOf(false) }
 
     val view = LocalView.current
     val viewTreeObserver = view.viewTreeObserver
@@ -112,9 +114,9 @@ fun HomeScreenContent(
 
     Column(
         modifier =
-            Modifier
-                .padding(16.dp)
-                .fillMaxHeight(),
+        Modifier
+            .padding(16.dp)
+            .fillMaxHeight(),
     ) { // Remplir la hauteur disponible
 
         if (!isSearchBarFocused) {
@@ -128,8 +130,9 @@ fun HomeScreenContent(
 
         PlateWidget(
             plateText = searchText,
-            onFocusChange = { isFocused ->
-                isSearchBarFocused = isFocused
+            onFocusChange = { focusValue ->
+                isFocused = focusValue
+                isSearchBarFocused = focusValue
             },
             onSearchTextChanged = { newText ->
                 searchText = newText
@@ -139,6 +142,7 @@ fun HomeScreenContent(
                     searchText = ""
                 }
             },
+            isFocused = isFocused
         )
 
         Spacer(modifier = Modifier.height(12.dp)) // Espace fixe entre SearchingBar et ActionsSearch
@@ -169,7 +173,10 @@ fun HomeScreenContent(
                         LazyColumn {
                             items(count = successState.historyList.size) { index ->
                                 val invertedIndex = successState.historyList.size - 1 - index
-                                SearchHistoryItem(successState.historyList[invertedIndex]) { plateNumber ->
+                                SearchHistoryItem(successState.historyList[invertedIndex], {
+                                    isFocused = true
+                                    searchText = it
+                                }) { plateNumber ->
                                     viewModel.deleteHistoryItem(plateNumber)
                                 }
                             }
@@ -189,14 +196,15 @@ fun HomeScreenContent(
 @Composable
 fun SearchHistoryItem(
     historyItem: History,
+    onSelect: (String) -> Unit,
     onDelete: (Int) -> Unit,
 ) {
     val context = LocalContext.current // To access string resources
     Row(
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
+        Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
@@ -207,10 +215,18 @@ fun SearchHistoryItem(
         Text(
             historyItem.plateNumber,
             style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.weight(1f).padding(horizontal = 8.dp),
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 8.dp)
+                .clickable {
+                    onSelect(historyItem.plateNumber)
+                },
         )
         IconButton(onClick = { onDelete(historyItem.id) }) {
-            Icon(Icons.Filled.Delete, contentDescription = context.getString(R.string.delete_action))
+            Icon(
+                Icons.Filled.Delete,
+                contentDescription = context.getString(R.string.delete_action)
+            )
         }
     }
 }
@@ -224,9 +240,9 @@ fun ActionsSearch(
     val context = LocalContext.current // To access string resources
     Row(
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(16.dp), // Add padding around the row for better spacing
+        Modifier
+            .fillMaxWidth()
+            .padding(16.dp), // Add padding around the row for better spacing
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -246,7 +262,11 @@ fun ActionsSearch(
             // Styling remains the same
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
         ) {
-            Icon(Icons.Filled.Search, contentDescription = context.getString(R.string.search_action), tint = Color.White)
+            Icon(
+                Icons.Filled.Search,
+                contentDescription = context.getString(R.string.search_action),
+                tint = Color.White
+            )
             Spacer(Modifier.width(8.dp))
             Text(context.getString(R.string.search_action), color = Color.White)
         }
@@ -261,7 +281,10 @@ fun QuickInfoWidget() {
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(context.getString(R.string.daily_tip_title), style = MaterialTheme.typography.titleMedium)
+            Text(
+                context.getString(R.string.daily_tip_title),
+                style = MaterialTheme.typography.titleMedium
+            )
             Spacer(modifier = Modifier.height(8.dp))
             Text(Const.conseilsDuJour.random(), style = MaterialTheme.typography.bodyMedium)
         }

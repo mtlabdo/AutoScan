@@ -26,6 +26,9 @@
     <string name="color">Couleur</string>
     <string name="fuel">Carburant</string>
 
+    <!-- VehicleHistorySection -->
+    <string name="history_information" translatable="false">Historique du véhicule</string>
+
     <!-- VehicleTechnicalDetailsSection -->
     <string name="technical_information">Informations techniques</string>
     <string name="fiscal_power">Puissance fiscale</string>
@@ -72,15 +75,26 @@
     <string name="terms_of_use_card_title">Conditions d\'Utilisation</string>
 
     <string name="welcome_message">
-    Bienvenue sur %1$s, présenté par Famous Inc ! Notre mission est de fournir des rapports d\'historique de véhicules complets et accessibles pour donner plus de pouvoir aux acheteurs de voitures et aux passionnés.
-    Fondée en 2024, notre équipe est dédiée à fournir des informations détaillées et fiables sur l\'historique des véhicules, vous aidant à prendre des décisions éclairées.
+        Bienvenue sur %1$s, présenté par Famous Inc ! Notre mission est de fournir des rapports d\'historique de véhicules complets et accessibles pour donner plus de pouvoir aux acheteurs de voitures et aux passionnés.
+        Fondée en 2024, notre équipe est dédiée à fournir des informations détaillées et fiables sur l\'historique des véhicules, vous aidant à prendre des décisions éclairées.
 
-    Avec %1$s, nous visons à offrir la tranquillité d\'esprit en fournissant des informations sur le passé d\'un véhicule, y compris les accidents précédents, l\'historique de propriété et les dossiers de service, le tout à portée de main.
-    Nous sommes fiers d\'avoir aidé des milliers d\'utilisateurs à éviter les pièges potentiels du marché des voitures d\'occasion et d\'avoir favorisé une communauté qui valorise la transparence et l\'achat éclairé.
+        Avec %1$s, nous visons à offrir la tranquillité d\'esprit en fournissant des informations sur le passé d\'un véhicule, y compris les accidents précédents, l\'historique de propriété et les dossiers de service, le tout à portée de main.
+        Nous sommes fiers d\'avoir aidé des milliers d\'utilisateurs à éviter les pièges potentiels du marché des voitures d\'occasion et d\'avoir favorisé une communauté qui valorise la transparence et l\'achat éclairé.
 
-    Nous croyons en l\'importance de la confiance et de la transparence dans l\'industrie automobile. Merci d\'avoir choisi %1$s, et nous espérons que notre service vous fournira les informations précieuses dont vous avez besoin pour prendre des décisions confiantes concernant les véhicules.
-</string>
+        Nous croyons en l\'importance de la confiance et de la transparence dans l\'industrie automobile. Merci d\'avoir choisi %1$s, et nous espérons que notre service vous fournira les informations précieuses dont vous avez besoin pour prendre des décisions confiantes concernant les véhicules.
+    </string>
 
     <string name="select_language">Sélectionner la langue</string>
+
+    <string name="demand_hitory" translatable="false">Demander l\'historique complet</string>
+    <string name="momentarily_not_available" translatable="false">Service momentément indisponible entre $%1 et $%2</string>
+    <string name="waiting_for_hitory" translatable="false">Un historiue complète sera bientot disponible, veuillez revenir après la correction dy bug, demande envoyé vous recevrez une notification quand le rapport sera calculé</string>
+
+    <string name="snitcher_release_crash_screen_title">Oups, restaurer l\'écran précédent ?</string>
+    <string name="snitcher_release_crash_screen_description">L\'application a planté de manière inattendue. Nous nous excusons pour le désagrément. Souhaitez-vous revenir à l\'endroit où vous vous êtes arrêté ?</string>
+    <string name="snitcher_release_crash_screen_restore">Restaurer</string>
+    <string name="snitcher_debug_crash_screen_restore">Restaurer l\'application</string>
+    <string name="snitcher_debug_crash_screen_debug_on_ide">Déboguer</string>
+    <string name="snitcher_debug_crash_screen_stacktrace">Trace de pile</string>
 
 </resources>

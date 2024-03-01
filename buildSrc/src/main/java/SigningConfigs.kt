@@ -1,8 +1,5 @@
 object SigningConfigs {
 
-    // Release name
-    const val releaseName = "release"
-
     // Signing file name
     const val storeFileName = "autoScan.jks"
 

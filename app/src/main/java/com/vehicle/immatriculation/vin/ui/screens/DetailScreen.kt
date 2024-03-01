@@ -1,5 +1,6 @@
 package com.vehicle.immatriculation.vin.ui.screens
 
+import android.annotation.SuppressLint
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,12 +17,18 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,6 +45,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.airbnb.lottie.compose.LottieAnimation
@@ -50,8 +58,12 @@ import com.vehicle.immatriculation.vin.model.Detail
 import com.vehicle.immatriculation.vin.navigation.AppState
 import com.vehicle.immatriculation.vin.ui.theme.AutoScanAppTheme
 import com.vehicle.immatriculation.vin.ui.widget.BackUiComposable
+import com.vehicle.immatriculation.vin.utils.FirebaseUtils
 import com.vehicle.immatriculation.vin.view.state.DetailState
 import com.vehicle.immatriculation.vin.view.viewmodel.DetailViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 @Composable
@@ -62,12 +74,11 @@ fun DetailScreen(
 ) {
     Surface {
         Scaffold(
-            content = { padding ->
+            content = { _ ->
                 Column(
-                    modifier =
-                        Modifier
-                            .padding(0.dp)
-                            .fillMaxHeight(),
+                    modifier = Modifier
+                        .padding(0.dp)
+                        .fillMaxHeight(),
                 ) { DetailScreenContent(viewModel, coroutineDispatcher, appState) }
             },
         )
@@ -94,7 +105,7 @@ fun DetailScreenContent(
             val successState = uiState as DetailState.Success
             TopBarWithLogo(successState.detail) { appState.onBackClick() }
             HorizontalDivider(Modifier.padding(vertical = 4.dp, horizontal = 16.dp))
-            VehicleDetailsScreen(successState.detail) { }
+            VehicleDetailsScreen(successState.detail, appState)
         }
 
         is DetailState.Error -> {
@@ -106,19 +117,16 @@ fun DetailScreenContent(
 }
 
 @Composable
-fun VehicleDetailsScreen(
-    detail: Detail,
-    onBackClicked: () -> Unit,
-) {
+fun VehicleDetailsScreen(detail: Detail, appState: AppState) {
     val scrollState = rememberScrollState()
     Column(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .verticalScroll(scrollState)
-                .padding(vertical = 8.dp, horizontal = 16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+            .padding(vertical = 4.dp, horizontal = 16.dp),
     ) {
         VehicleBasicInfoSection(detail)
+        VehicleHistorySection(detail) { appState.navToReport() }
         VehicleTechnicalDetailsSection(detail)
         VehicleIdentificationSection(detail)
         VehicleAdditionalDetailsSection(detail)
@@ -133,10 +141,9 @@ fun TopBarWithLogo(
     val context = LocalContext.current // Get local context to access resources
 
     Row(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         BackUiComposable {
@@ -160,19 +167,14 @@ fun TopBarWithLogo(
             }
 
             AsyncImage(
-                model =
-                    ImageRequest.Builder(LocalContext.current)
-                        .error(R.drawable.car_placeholder)
-                        .data(detail.logoMarque)
-                        .crossfade(true)
-                        .build(),
+                model = ImageRequest.Builder(LocalContext.current).error(R.drawable.car_placeholder)
+                    .data(detail.logoMarque).crossfade(true).build(),
                 placeholder = painterResource(R.drawable.car_placeholder),
                 contentDescription = "Logo de la marque",
                 contentScale = ContentScale.Crop,
-                modifier =
-                    Modifier
-                        .clip(CircleShape)
-                        .size(72.dp),
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .size(72.dp),
             )
         }
     }
@@ -182,9 +184,9 @@ fun TopBarWithLogo(
 fun VehicleBasicInfoSection(detail: Detail) {
     val context = LocalContext.current // Get local context to access resources
     Card(
-        modifier =
-            Modifier
-                .fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
         shape = RoundedCornerShape(12.dp), // Bords arrondis pour la Card
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp), // Légère augmentation de l'élévation pour plus de profondeur
     ) {
@@ -220,15 +222,87 @@ fun VehicleBasicInfoSection(detail: Detail) {
     }
 }
 
+
+@Composable
+fun TimelineItem(title: String?, description: String?, iconId: Int) {
+    val context = LocalContext.current // Get local context to access resources
+    Row(verticalAlignment = Alignment.Top, modifier = Modifier.padding(bottom = 16.dp)) {
+        Icon(
+            painter = painterResource(id = iconId),
+            contentDescription = null, // Description pour l'accessibilité
+            modifier = Modifier
+                .size(24.dp)
+                .align(Alignment.CenterVertically)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Column {
+            Text(
+                text = title ?: context.getString(R.string.not_available),
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Text(
+                text = description ?: context.getString(R.string.not_available),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+        }
+    }
+}
+
+
+@Composable
+fun VehicleHistorySection(detail: Detail, onDemande: () -> Unit) {
+    val context = LocalContext.current // Get local context to access resources
+
+    Card(
+        modifier = Modifier
+            .padding(vertical = 8.dp)
+            .fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp), // Définit l'élévation de la Card
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            TitleSection(
+                title = context.getString(R.string.history_information),
+                icon = R.drawable.ic_history,
+            )
+            Spacer(modifier = Modifier.height(16.dp)) // Espace après le titre
+
+            // Élément de la chronologie
+            TimelineItem(
+                title = detail.date1erCirFr,
+                description = context.getString(R.string.first_registration_date),
+                iconId = R.drawable.ic_key_car
+            )
+
+
+            // Bouton centré
+            Button(
+                onClick = {
+                    FirebaseUtils.logDemandVehicleHistory(plateNumber = detail.immat ?: "UNKNOWN")
+                    onDemande()
+                },
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth(), // Centrer le bouton horizontalement
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+            ) {
+                Spacer(Modifier.width(8.dp))
+                Text(context.getString(R.string.demand_hitory), color = Color.White)
+            }
+        }
+    }
+}
+
 @Composable
 fun VehicleTechnicalDetailsSection(detail: Detail) {
     val context = LocalContext.current // Get local context to access resources
 
     Card(
-        modifier =
-            Modifier
-                .padding(vertical = 8.dp)
-                .fillMaxWidth(),
+        modifier = Modifier
+            .padding(vertical = 8.dp)
+            .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp), // Définit l'élévation de la Card
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -257,10 +331,9 @@ fun VehicleIdentificationSection(detail: Detail) {
     val context = LocalContext.current // Get local context to access resources
 
     Card(
-        modifier =
-            Modifier
-                .padding(vertical = 8.dp)
-                .fillMaxWidth(),
+        modifier = Modifier
+            .padding(vertical = 8.dp)
+            .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp), // Définit l'élévation de la Card
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -293,10 +366,9 @@ fun VehicleAdditionalDetailsSection(detail: Detail) {
     val context = LocalContext.current // Get local context to access resources
 
     Card(
-        modifier =
-            Modifier
-                .padding(vertical = 8.dp)
-                .fillMaxWidth(),
+        modifier = Modifier
+            .padding(vertical = 8.dp)
+            .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp), // Définit l'élévation de la Card
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -348,7 +420,7 @@ fun DetailItem(
             Icon(
                 painter = painterResource(id = it),
                 contentDescription = label,
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier.size(20.dp),
                 tint = Color.Unspecified,
             )
             Spacer(modifier = Modifier.width(8.dp))
@@ -410,39 +482,41 @@ fun ErrorScreen(errorMessage: String) {
 @Composable
 fun DefaultPreview() {
     AutoScanAppTheme {
-        VehicleDetailsScreen(detail = detail) {}
+        VehicleDetailsScreen(
+            detail = detail,
+            AppState(navController = NavController(LocalContext.current))
+        )
     }
 }
 
-private val detail =
-    Detail(
-        immat = "CT851AA",
-        co2 = "119",
-        energie = "4",
-        energieNGC = "ESSENCE",
-        genreVCG = 1,
-        genreVCGNGC = "VP",
-        puisFisc = "4",
-        carrosserieCG = "CI",
-        marque = "FIAT",
-        modele = "PANDA",
-        date1erCirUs = "2009-06-02",
-        date1erCirFr = "02-06-2009",
-        collection = "non",
-        date30 = "1989-06-30",
-        vin = "ZFA16900001426851",
-        boiteVitesse = "M",
-        puisFiscReel = "60",
-        nrPassagers = "4",
-        nbPortes = "4",
-        typeMine = "MFT1022E4419",
-        couleur = "JAUNE CLAIR",
-        poids = "860 kg",
-        cylindres = "4",
-        sraId = "FI04139",
-        sraGroup = "27",
-        sraCommercial = "ALESSI 1.2 8V",
-        logoMarque = "https=//api.apiplaqueimmatriculation.com/logos_marques/fiat.png",
-        codeMoteur = "",
-        kType = "17628",
-    )
+private val detail = Detail(
+    immat = "CT851AA",
+    co2 = "119",
+    energie = "4",
+    energieNGC = "ESSENCE",
+    genreVCG = 1,
+    genreVCGNGC = "VP",
+    puisFisc = "4",
+    carrosserieCG = "CI",
+    marque = "FIAT",
+    modele = "PANDA",
+    date1erCirUs = "2009-06-02",
+    date1erCirFr = "02-06-2009",
+    collection = "non",
+    date30 = "1989-06-30",
+    vin = "ZFA16900001426851",
+    boiteVitesse = "M",
+    puisFiscReel = "60",
+    nrPassagers = "4",
+    nbPortes = "4",
+    typeMine = "MFT1022E4419",
+    couleur = "JAUNE CLAIR",
+    poids = "860 kg",
+    cylindres = "4",
+    sraId = "FI04139",
+    sraGroup = "27",
+    sraCommercial = "ALESSI 1.2 8V",
+    logoMarque = "https=//api.apiplaqueimmatriculation.com/logos_marques/fiat.png",
+    codeMoteur = "",
+    kType = "17628",
+)

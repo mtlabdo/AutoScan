@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.ktlint)
     alias(libs.plugins.detekt)
     alias(libs.plugins.google.secrets)
+    alias(libs.plugins.baselineprofile)
 }
 
 android {
@@ -48,7 +49,7 @@ android {
     }
 
     signingConfigs {
-        create(SigningConfigs.releaseName) {
+        create("release") {
             storeFile = file(SigningConfigs.storeFileName)
             storePassword = System.getenv(SigningConfigs.storePasswordName)
             keyAlias = System.getenv(SigningConfigs.keyAliasName)
@@ -58,11 +59,15 @@ android {
 
     buildTypes {
         debug {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
         }
         release {
-            signingConfig = signingConfigs.getByName(SigningConfigs.releaseName)
-            isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
@@ -110,6 +115,7 @@ dependencies {
 
     // Hilt
     api(libs.androidx.hilt.work)
+    implementation(libs.androidx.profileinstaller)
     testImplementation(libs.junit.jupiter)
     debugImplementation(libs.androidx.ui.tooling)
     ksp(libs.androidx.hilt.compiler)
@@ -134,6 +140,10 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
 
+
+    // crash tracer & restorer
+    implementation(libs.snitcher)
+
     // Testing
     testImplementation(libs.test.mockk)
     testImplementation(libs.junit)
@@ -148,6 +158,9 @@ dependencies {
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.test.manifest)
+
+    // baseline profile
+    baselineProfile(projects.baselineprofile)
 }
 
 secrets {

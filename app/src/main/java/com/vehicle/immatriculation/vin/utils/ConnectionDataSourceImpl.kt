@@ -47,7 +47,8 @@ class ConnectionDataSourceImpl(
                 } else {
                     @Suppress("DEPRECATION")
                     val activeNetworkInfo = connectivityManager.activeNetworkInfo
-                    @Suppress("DEPRECATION") activeNetworkInfo?.isConnected == true
+                    @Suppress("DEPRECATION")
+                    activeNetworkInfo?.isConnected == true
                 }
         }
 

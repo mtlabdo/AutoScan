@@ -18,6 +18,7 @@ import com.vehicle.immatriculation.vin.dispatcher.DispatcherProvider
 import com.vehicle.immatriculation.vin.ui.Screen
 import com.vehicle.immatriculation.vin.ui.screens.DetailScreen
 import com.vehicle.immatriculation.vin.ui.screens.HelpScreen
+import com.vehicle.immatriculation.vin.ui.screens.RepportScreen
 import com.vehicle.immatriculation.vin.ui.screens.SettingsScreen
 import com.vehicle.immatriculation.vin.utils.assistedViewModel
 import com.vehicle.immatriculation.vin.view.viewmodel.DetailViewModel
@@ -91,6 +92,12 @@ fun AppNavigation(dispatcherProvider: DispatcherProvider) {
                 appState = appState,
             )
         }
+
+        composable(Screen.repport.route) {
+            RepportScreen(
+                appState = appState,
+            )
+        }
     }
 }
 
@@ -106,6 +113,8 @@ class AppState(
     fun navigateToSettings() = navController.navigate(Screen.Settings.route)
 
     fun navToHelp() = navController.navigate(Screen.help.route)
+
+    fun navToReport() = navController.navigate(Screen.repport.route)
 
     fun navigateToHome() {
         navController.navigate(Screen.Home.route) {

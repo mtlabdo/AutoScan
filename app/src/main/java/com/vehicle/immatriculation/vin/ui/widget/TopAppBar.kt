@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -93,7 +94,7 @@ fun TopBar(appState: AppState) {
                             .clip(RoundedCornerShape(8.dp)),
                 ) {
                     Icon(
-                        Icons.Default.Help,
+                        Icons.AutoMirrored.Filled.Help,
                         contentDescription = context.getString(R.string.help_icon_content_description),
                     )
                 }

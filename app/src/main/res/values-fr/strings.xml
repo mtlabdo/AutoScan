@@ -79,4 +79,10 @@
 
     <string name="select_language">Sélectionner la langue</string>
 
+    <string name="snitcher_release_crash_screen_title">Oups, restaurer l\'écran précédent ?</string>
+    <string name="snitcher_release_crash_screen_description">L\'application a planté de manière inattendue. Nous nous excusons pour le désagrément. Souhaitez-vous revenir à l\'endroit où vous vous êtes arrêté ?</string>
+    <string name="snitcher_release_crash_screen_restore">Restaurer</string>
+    <string name="snitcher_debug_crash_screen_restore">Restaurer l\'application</string>
+    <string name="snitcher_debug_crash_screen_debug_on_ide">Déboguer</string>
+    <string name="snitcher_debug_crash_screen_stacktrace">Trace de pile</string>
 </resources>
