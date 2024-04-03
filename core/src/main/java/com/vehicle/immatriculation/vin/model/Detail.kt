@@ -1,34 +1,131 @@
 package com.vehicle.immatriculation.vin.model
 
 data class Detail(
-    val erreur: String? = null,
-    val immat: String? = null,
-    val co2: String? = null,
-    val energie: String? = null,
-    val energieNGC: String? = null,
-    val genreVCG: Long? = null,
-    val genreVCGNGC: String? = null,
-    val puisFisc: String? = null,
-    val carrosserieCG: String? = null,
-    val marque: String? = null,
-    val modele: String? = null,
-    val date1erCirUs: String? = null,
-    val date1erCirFr: String? = null,
-    val collection: String? = null,
-    val date30: String? = null,
-    val vin: String? = null,
-    val boiteVitesse: String? = null,
-    val puisFiscReel: String? = null,
-    val nrPassagers: String? = null,
-    val nbPortes: String? = null,
-    val typeMine: String? = null,
-    val couleur: String? = null,
-    val poids: String? = null,
-    val cylindres: String? = null,
-    val sraId: String? = null,
-    val sraGroup: String? = null,
-    val sraCommercial: String? = null,
-    val logoMarque: String? = null,
-    val codeMoteur: String? = null,
-    val kType: String? = null,
+    var id: String?,
+    var result: Result?,
+    var placas: String?,
+    var niv: String?,
+    var detail: String?
+)
+
+data class Result(
+    var repuve: Repuve?,
+    var pgj: Pgj?,
+    var ocra: Ocra?,
+    var carfax: Carfax?,
+    var aviso: Aviso?
+)
+
+data class Repuve(
+    var placa: String?,
+    var clase: String?,
+    var marca: String?,
+    var modelo: String?,
+    var anioModelo: String?,
+    var tipo: String?,
+    var complemento: String?,
+    var idImportacion: Int?,
+    var nrpv: String?,
+    var idInstitucion: Int?,
+    var nombre: String?,
+    var vin: String?,
+    var numPuertas: String?,
+    var paisOrigen: String?,
+    var linea: String?,
+    var cilindrada: String?,
+    var numCilindros: String?,
+    var numEjes: String?,
+    var plantaEnsamble: String?,
+    var senas: Any?,
+    var folioRpv: Int?,
+    var fechaRegistro: String?,
+    var horaRegistro: String?,
+    var idEntidad: Int?,
+    var entidadEmplaco: String?,
+    var fechaExpedicion: String?,
+    var fechaActualiza: String?,
+    var tipoMovimiento: Int?,
+    var movimiento: String?
+)
+
+data class Pgj(
+    var vin: String?,
+    var placa: String?,
+    var idEstatusVhiRobo: Int?,
+    var estatusVhiRobo: String?,
+    var fteVhiRobo: String?,
+    var fechaActualiza: String?,
+    var fechaRobo: String?,
+    var fechaAverigua: String?,
+    var fteRecupera: Any?,
+    var fecActRec: Any?
+)
+
+data class Ocra(
+    var conReporteRoboRecuperacion: String?,
+    var reporte: Reporte?,
+    var vehiculo: Vehiculo?,
+    var reporteRobo: ReporteRobo?,
+    var reporteRecuperacion: Any?
+)
+
+data class Reporte(
+    var roboORecuperacion: Int?,
+    var estatus: String?
+)
+
+data class Vehiculo(
+    var numeroSerie: String?,
+    var idEstatusPlaca: Int?,
+    var estatusPlaca: String?,
+    var idEstatusVehiculo: Int?,
+    var estatusVehiculo: String?,
+    var idOrigen: Int?,
+    var origen: String?,
+    var idColor: Int?,
+    var color: String?,
+    var idMarca: Int?,
+    var marca: String?,
+    var idTipoSubmarca: Int?,
+    var tipoSubmarca: String?,
+    var idTipoDeTransporte: Int?,
+    var tipoDeTransporte: String?,
+    var modelo: Int?,
+    var placa: String?,
+    var motor: String?
+)
+
+data class ReporteRobo(
+    var idEstusReporte: Int?,
+    var estusReporte: String?,
+    var codigoPostal: String?,
+    var idEstado: Int?,
+    var estado: String?,
+    var idMunicipio: Long?,
+    var municipio: String?,
+    var idColonia: Any?,
+    var colonia: Any?,
+    var calle: Any?,
+    var idTipoRobo: Int?,
+    var tipoRobo: String?,
+    var fechaRobo: String?,
+    var actaRobo: Any?,
+    var numeroAsaltantes: Any?,
+    var carretera: Any?
+)
+
+data class Carfax(
+    var statusCode: Int?,
+    var message: String?,
+    var _id: String?,
+    var data: CarfaxData?
+)
+
+data class CarfaxData(
+    var robo: Boolean?,
+    var message: String?
+)
+
+data class Aviso(
+    var robo: Boolean?
 )

@@ -15,6 +15,19 @@
     <!-- TopBarWithLogo -->
     <string name="first_circulation">Première circulation: %1$s</string>
 
+    <string name="class_vehicle">class</string>
+    <string name="model_year">Model Year</string>
+    <string name="origin">Pays origin</string>
+    <string name="type">Type</string>
+    <string name="NRPV">NRPV</string>
+    <string name="first_registration">First registration</string>
+    <string name="type_of_transport">Type of transport</string>
+    <string name="serial_no">Numéro de série: %1$s </string>
+    <string name="motor">Motor</string>
+    <string name="num_cilindres">Num Cilindros</string>
+    <string name="carfax">Carfax</string>
+    <string name="carfax_check_result">Carfax check result</string>
+
     <!-- VehicleBasicInfoSection -->
     <string name="basic_information">Informations de base</string>
     <string name="registration">Immatriculation</string>

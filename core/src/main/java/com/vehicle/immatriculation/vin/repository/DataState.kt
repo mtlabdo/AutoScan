@@ -5,6 +5,8 @@ sealed class DataState<T> {
     data class Success<T>(val data: T) : DataState<T>()
     data class Failure<T>(val errorHandler: ErrorHolder) : DataState<T>()
 
+    data class Processing<T>(val msg: String) : DataState<T>()
+
     companion object {
         fun <T> success(data: T) = Success(data)
         fun <T> failure(errorHandler: ErrorHolder) = Failure<T>(errorHandler)

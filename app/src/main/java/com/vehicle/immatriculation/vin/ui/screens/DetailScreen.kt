@@ -1,6 +1,5 @@
 package com.vehicle.immatriculation.vin.ui.screens
 
-import android.annotation.SuppressLint
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,18 +16,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -61,9 +56,6 @@ import com.vehicle.immatriculation.vin.ui.widget.BackUiComposable
 import com.vehicle.immatriculation.vin.utils.FirebaseUtils
 import com.vehicle.immatriculation.vin.view.state.DetailState
 import com.vehicle.immatriculation.vin.view.viewmodel.DetailViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.Locale
 
 @Composable
@@ -101,11 +93,16 @@ fun DetailScreenContent(
             SearchPlateAnimation()
         }
 
-        is DetailState.Success -> {
-            val successState = uiState as DetailState.Success
-            TopBarWithLogo(successState.detail) { appState.onBackClick() }
+        is DetailState.SuccessConsult -> {
+            val successConsultState = uiState as DetailState.SuccessConsult
+            SearchPlateAnimation()
+        }
+
+        is DetailState.SuccessDetail -> {
+            val successDetailState = uiState as DetailState.SuccessDetail
+            TopBarWithLogo(successDetailState.detail) { appState.onBackClick() }
             HorizontalDivider(Modifier.padding(vertical = 4.dp, horizontal = 16.dp))
-            VehicleDetailsScreen(successState.detail, appState)
+            VehicleDetailsScreen(successDetailState.detail, appState)
         }
 
         is DetailState.Error -> {
@@ -150,17 +147,17 @@ fun TopBarWithLogo(
             onBackClicked()
         }
         Spacer(modifier = Modifier.width(16.dp))
-        detail?.let {
+        detail?.result?.let {
             Column(
                 modifier = Modifier.weight(1f),
             ) {
                 Text(
-                    text = "${detail.marque} ${detail.modele}",
+                    text = "${it.repuve?.marca} ${it.repuve?.modelo}",
                     style = MaterialTheme.typography.headlineSmall,
                 )
-                detail.date1erCirFr?.let {
+                it.repuve?.let {
                     Text(
-                        context.getString(R.string.first_circulation, it),
+                        context.getString(R.string.first_registration, it.fechaRegistro , it.horaRegistro),
                         style = MaterialTheme.typography.bodyMedium,
                     )
                 }
@@ -168,7 +165,7 @@ fun TopBarWithLogo(
 
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current).error(R.drawable.car_placeholder)
-                    .data(detail.logoMarque).crossfade(true).build(),
+                    .data(null).crossfade(true).build(),
                 placeholder = painterResource(R.drawable.car_placeholder),
                 contentDescription = "Logo de la marque",
                 contentScale = ContentScale.Crop,
@@ -199,25 +196,29 @@ fun VehicleBasicInfoSection(detail: Detail) {
 
             DetailItem(
                 context.getString(R.string.registration),
-                detail.immat?.uppercase(Locale.getDefault()),
+                detail.result?.ocra?.vehiculo?.placa?.uppercase(Locale.getDefault()),
             )
             HorizontalDivider(Modifier.padding(vertical = 4.dp))
-            DetailItem(context.getString(R.string.brand), detail.marque)
+            DetailItem(context.getString(R.string.brand), detail.result?.ocra?.vehiculo?.marca)
             HorizontalDivider(Modifier.padding(vertical = 4.dp))
-            DetailItem(context.getString(R.string.model), detail.modele)
+            DetailItem(context.getString(R.string.model), detail.result?.repuve?.modelo)
             HorizontalDivider(Modifier.padding(vertical = 4.dp))
             DetailItem(
-                context.getString(R.string.first_registration_date),
-                detail.date1erCirFr,
+                context.getString(R.string.model_year),
+                detail.result?.repuve?.anioModelo,
             )
             HorizontalDivider(Modifier.padding(vertical = 4.dp))
-            DetailItem(context.getString(R.string.gearbox), detail.boiteVitesse)
+            DetailItem(context.getString(R.string.origin), detail.result?.ocra?.vehiculo?.origen)
             HorizontalDivider(Modifier.padding(vertical = 4.dp))
-            DetailItem(context.getString(R.string.number_of_doors), detail.nbPortes)
+            DetailItem(context.getString(R.string.color), detail.result?.ocra?.vehiculo?.color)
             HorizontalDivider(Modifier.padding(vertical = 4.dp))
-            DetailItem(context.getString(R.string.color), detail.couleur)
+            DetailItem(context.getString(R.string.type), detail.result?.repuve?.tipo)
             HorizontalDivider(Modifier.padding(vertical = 4.dp))
-            DetailItem(context.getString(R.string.fuel), detail.energieNGC)
+            DetailItem(context.getString(R.string.NRPV), detail.result?.repuve?.nrpv)
+            HorizontalDivider(Modifier.padding(vertical = 4.dp))
+            DetailItem(context.getString(R.string.number_of_doors), detail.result?.repuve?.numPuertas)
+            HorizontalDivider(Modifier.padding(vertical = 4.dp))
+            DetailItem(context.getString(R.string.type_of_transport), detail.result?.ocra?.vehiculo?.tipoDeTransporte)
         }
     }
 }
@@ -271,16 +272,15 @@ fun VehicleHistorySection(detail: Detail, onDemande: () -> Unit) {
 
             // Élément de la chronologie
             TimelineItem(
-                title = detail.date1erCirFr,
-                description = context.getString(R.string.first_registration_date),
+                title = "${detail.result?.repuve?.fechaRegistro} | ${detail.result?.repuve?.horaRegistro}" ,
+                description = context.getString(R.string.first_registration),
                 iconId = R.drawable.ic_key_car
             )
-
 
             // Bouton centré
             Button(
                 onClick = {
-                    FirebaseUtils.logDemandVehicleHistory(plateNumber = detail.immat ?: "UNKNOWN")
+                    FirebaseUtils.logDemandVehicleHistory(plateNumber = detail.placas ?: "UNKNOWN")
                     onDemande()
                 },
                 modifier = Modifier
@@ -311,17 +311,14 @@ fun VehicleTechnicalDetailsSection(detail: Detail) {
                 icon = R.drawable.ic_info_tech,
             )
             Spacer(modifier = Modifier.height(16.dp)) // Espace après le titre
-            DetailItem(context.getString(R.string.fiscal_power), detail.puisFisc)
+            DetailItem(context.getString(R.string.motor), detail.result?.ocra?.vehiculo?.motor)
+
             HorizontalDivider(Modifier.padding(vertical = 4.dp))
-            DetailItem(context.getString(R.string.real_fiscal_power), detail.puisFiscReel)
+            DetailItem(context.getString(R.string.cylinders), detail.result?.repuve?.cilindrada)
+
             HorizontalDivider(Modifier.padding(vertical = 4.dp))
-            DetailItem(context.getString(R.string.body_type), detail.carrosserieCG)
-            HorizontalDivider(Modifier.padding(vertical = 4.dp))
-            DetailItem(context.getString(R.string.weight), detail.poids)
-            HorizontalDivider(Modifier.padding(vertical = 4.dp))
-            DetailItem(context.getString(R.string.cylinders), detail.cylindres)
-            HorizontalDivider(Modifier.padding(vertical = 4.dp))
-            DetailItem(context.getString(R.string.energy), detail.energie)
+            DetailItem(context.getString(R.string.num_cilindres), detail.result?.repuve?.numCilindros)
+
         }
     }
 }
@@ -342,21 +339,14 @@ fun VehicleIdentificationSection(detail: Detail) {
                 icon = R.drawable.ic_car_id,
             )
             Spacer(modifier = Modifier.height(16.dp)) // Espace après le titre
-            DetailItem(context.getString(R.string.genre), detail.genreVCGNGC)
+
+            DetailItem(context.getString(R.string.vin), detail.result?.pgj?.vin)
             HorizontalDivider(Modifier.padding(vertical = 4.dp))
-            DetailItem(context.getString(R.string.vin), detail.vin)
+            DetailItem(context.getString(R.string.serial_no), detail.result?.ocra?.vehiculo?.numeroSerie)
             HorizontalDivider(Modifier.padding(vertical = 4.dp))
-            DetailItem(context.getString(R.string.type_mine), detail.typeMine)
-            HorizontalDivider(Modifier.padding(vertical = 4.dp))
-            DetailItem(context.getString(R.string.sra_commercial), detail.sraCommercial)
-            HorizontalDivider(Modifier.padding(vertical = 4.dp))
-            DetailItem(context.getString(R.string.sra_group), detail.sraGroup)
-            HorizontalDivider(Modifier.padding(vertical = 4.dp))
-            DetailItem(context.getString(R.string.sra_id), detail.sraId)
-            HorizontalDivider(Modifier.padding(vertical = 4.dp))
-            DetailItem(context.getString(R.string.engine_code), detail.codeMoteur)
-            HorizontalDivider(Modifier.padding(vertical = 4.dp))
-            DetailItem(context.getString(R.string.k_type), detail.kType)
+
+            DetailItem(context.getString(R.string.origin), detail.result?.repuve?.paisOrigen)
+
         }
     }
 }
@@ -377,9 +367,7 @@ fun VehicleAdditionalDetailsSection(detail: Detail) {
                 icon = R.drawable.ic_car_plus,
             )
             Spacer(modifier = Modifier.height(16.dp)) // Espace après le titre
-            DetailItem(context.getString(R.string.number_of_passengers), detail.nrPassagers)
-            HorizontalDivider(Modifier.padding(vertical = 4.dp))
-            DetailItem(context.getString(R.string.collection), detail.collection)
+            DetailItem(context.getString(R.string.carfax_check_result), detail.result?.carfax?.data?.message)
         }
     }
 }
@@ -477,46 +465,15 @@ fun ErrorScreen(errorMessage: String) {
         }
     }
 }
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun DefaultPreview() {
+//    AutoScanAppTheme {
+//        VehicleDetailsScreen(
+//            detail = detail,
+//            AppState(navController = NavController(LocalContext.current))
+//        )
+//    }
+//}
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    AutoScanAppTheme {
-        VehicleDetailsScreen(
-            detail = detail,
-            AppState(navController = NavController(LocalContext.current))
-        )
-    }
-}
-
-private val detail = Detail(
-    immat = "CT851AA",
-    co2 = "119",
-    energie = "4",
-    energieNGC = "ESSENCE",
-    genreVCG = 1,
-    genreVCGNGC = "VP",
-    puisFisc = "4",
-    carrosserieCG = "CI",
-    marque = "FIAT",
-    modele = "PANDA",
-    date1erCirUs = "2009-06-02",
-    date1erCirFr = "02-06-2009",
-    collection = "non",
-    date30 = "1989-06-30",
-    vin = "ZFA16900001426851",
-    boiteVitesse = "M",
-    puisFiscReel = "60",
-    nrPassagers = "4",
-    nbPortes = "4",
-    typeMine = "MFT1022E4419",
-    couleur = "JAUNE CLAIR",
-    poids = "860 kg",
-    cylindres = "4",
-    sraId = "FI04139",
-    sraGroup = "27",
-    sraCommercial = "ALESSI 1.2 8V",
-    logoMarque = "https=//api.apiplaqueimmatriculation.com/logos_marques/fiat.png",
-    codeMoteur = "",
-    kType = "17628",
-)

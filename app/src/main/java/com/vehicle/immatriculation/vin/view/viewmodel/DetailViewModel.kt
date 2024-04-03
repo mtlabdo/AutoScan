@@ -29,19 +29,22 @@ class DetailViewModel
         private var syncJob: Job? = null
 
         init {
-            getDetail()
+            getConsult()
         }
 
-        private fun getDetail() {
+        private fun getConsult() {
             if (syncJob?.isActive == true) return
             try {
                 syncJob =
-                    vehicleRepository.getDetailByPlate(plateNumber)
+                    vehicleRepository.getConsultByPlate(plateNumber)
                         .onStart { updateViewState(DetailState.Loading) }
                         .onEach { delay(2000) }
                         .map { it ->
-                            it.onSuccess { detail ->
-                                updateViewState(DetailState.Success(detail))
+                            it.onSuccess { consult ->
+                                updateViewState(DetailState.SuccessConsult(consult))
+                                if (!consult.id.isNullOrBlank()){
+                                    getDetailFromConsult(consult.id!!)
+                                }
                             }
                             it.onFailure { error ->
                                 updateViewState(DetailState.Error(error.message))
@@ -54,6 +57,29 @@ class DetailViewModel
                 updateViewState(DetailState.Error("Can not get vehicle detail"))
             }
         }
+
+    private fun getDetailFromConsult(id: String) {
+        //if (syncJob?.isActive == true) return
+        try {
+            syncJob =
+                vehicleRepository.getDetailByConsultId(id, plateNumber)
+                    .onStart { updateViewState(DetailState.Loading) }
+                    .onEach { delay(2000) }
+                    .map { it ->
+                        it.onSuccess { detail ->
+                            //updateViewState(DetailState.SuccessDetail(detail))
+                        }
+                        it.onFailure { error ->
+                            updateViewState(DetailState.Error(error.message))
+                        }
+                    }
+                    .flowOn(dispatcherProvider.io)
+                    .launchIn(viewModelScope)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            updateViewState(DetailState.Error("Can not get vehicle detail"))
+        }
+    }
 
         @AssistedFactory
         interface Factory {
