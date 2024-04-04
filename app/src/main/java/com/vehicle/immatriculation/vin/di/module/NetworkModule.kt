@@ -4,10 +4,11 @@ import android.content.Context
 import android.net.ConnectivityManager
 import com.vehicle.immatriculation.vin.BuildConfig
 import com.vehicle.immatriculation.vin.connectivity.ConnectionDataState
-import com.vehicle.immatriculation.vin.data.Constant
 import com.vehicle.immatriculation.vin.data.remote.api.ApiInterface
+import com.vehicle.immatriculation.vin.data.remote.api.ApiMailInterface
 import com.vehicle.immatriculation.vin.data.remote.retrofit.RetrofitService
 import com.vehicle.immatriculation.vin.di.BaseUrl
+import com.vehicle.immatriculation.vin.di.MailBaseUrl
 import com.vehicle.immatriculation.vin.utils.ConnectionDataSourceImpl
 import dagger.Module
 import dagger.Provides
@@ -19,6 +20,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
+
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -41,7 +43,8 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor) = RetrofitService.getHttpClient(httpLoggingInterceptor)
+    fun provideHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor) =
+        RetrofitService.getHttpClient(httpLoggingInterceptor)
 
     @Provides
     @Singleton
@@ -59,10 +62,23 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideHttpLoggingInterceptor() =
-        HttpLoggingInterceptor().apply {
-            if (BuildConfig.DEBUG) {
-                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-            }
-        }
+    fun provideApiMailNetworkService(
+        @MailBaseUrl mailBaseUrl: String,
+        okHttpClient: OkHttpClient,
+        gsonConverterFactory: GsonConverterFactory,
+    ): ApiMailInterface {
+        return RetrofitService.getRetrofit<ApiMailInterface>(
+            mailBaseUrl,
+            okHttpClient,
+            gsonConverterFactory,
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideHttpLoggingInterceptor() : HttpLoggingInterceptor {
+        val logging = HttpLoggingInterceptor()
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+        return logging
+    }
 }

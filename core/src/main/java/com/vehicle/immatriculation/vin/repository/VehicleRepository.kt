@@ -12,4 +12,6 @@ interface VehicleRepository {
     fun addHistoryItem(plate: String)
 
     fun deleteHistoryItem(id: Int)
+
+    suspend fun sendFeedback(feed: String)
 }

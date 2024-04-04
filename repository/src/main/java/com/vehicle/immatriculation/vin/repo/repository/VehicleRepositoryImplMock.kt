@@ -67,6 +67,10 @@ class VehicleRepositoryImplMock @Inject internal constructor(
         listMock = listMock.filterNot { it.id == id }.toMutableList()
     }
 
+    override suspend fun sendFeedback(feed: String) {
+        TODO("Not yet implemented")
+    }
+
     override fun getDetailByPlate(plate: String): Flow<DataState<Detail>> = flow {
         delay(3000)
         emit(DataState.Success(detail))

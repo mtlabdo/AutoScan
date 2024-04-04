@@ -6,12 +6,14 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
+
 object RetrofitService {
     inline fun <reified T> getRetrofit(
         baseUrl: String,
         okHttpClient: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory
     ): T {
+
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(gsonConverterFactory)
