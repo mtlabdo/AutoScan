@@ -67,6 +67,12 @@ class HomeViewModel
             }
         }
 
+    fun sendFeedback(feedback: String) {
+        viewModelScope.launch(dispatcherProvider.io) {
+            vehicleRepository.sendFeedback(feedback)
+        }
+    }
+
         companion object {
             private const val TAG = "HomeViewModel"
         }

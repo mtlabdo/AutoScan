@@ -135,6 +135,8 @@ dependencies {
 
     implementation(libs.coil.compose)
 
+    implementation(libs.logging.interceptor.v390)
+
     // firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)

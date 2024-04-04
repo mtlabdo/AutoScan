@@ -6,6 +6,8 @@ import com.vehicle.immatriculation.vin.repo.mapper.toListDataModel
 import com.vehicle.immatriculation.vin.model.Detail
 import com.vehicle.immatriculation.vin.model.History
 import com.vehicle.immatriculation.vin.data.remote.api.ApiInterface
+import com.vehicle.immatriculation.vin.data.remote.api.ApiMailInterface
+import com.vehicle.immatriculation.vin.data.remote.api.Mail
 import com.vehicle.immatriculation.vin.data.remote.util.getResponse
 import com.vehicle.immatriculation.vin.repository.DataState
 import com.vehicle.immatriculation.vin.repository.ErrorHolder
@@ -20,7 +22,8 @@ import javax.inject.Singleton
 @Singleton
 class VehicleRepositoryImpl @Inject internal constructor(
     private val database: AppDbService,
-    private val vehicleService: ApiInterface
+    private val vehicleService: ApiInterface,
+    private val mailService: ApiMailInterface
 ) : VehicleRepository {
 
 
@@ -37,7 +40,15 @@ class VehicleRepositoryImpl @Inject internal constructor(
         }
         emit(dataState)
     }.catch {
-        emit(DataState.Failure(ErrorHolder.Unknown("Impossible de trouver les informations de la plaque suivante : $plate {${it.printStackTrace().toString()}}")))
+        emit(
+            DataState.Failure(
+                ErrorHolder.Unknown(
+                    "Impossible de trouver les informations de la plaque suivante : $plate {${
+                        it.printStackTrace().toString()
+                    }}"
+                )
+            )
+        )
     }
 
     override fun getHistory(): Flow<DataState<List<History>>> = flow {
@@ -52,6 +63,17 @@ class VehicleRepositoryImpl @Inject internal constructor(
     override fun deleteHistoryItem(id: Int) {
         try {
             database.deleteHistoryItem(id)
+        } catch (generalException: Exception) {
+            generalException.printStackTrace()
+        }
+    }
+
+    override suspend fun sendFeedback(feed: String) {
+        val mail = Mail(
+            body = feed
+        )
+        try {
+            val sendFeedBAckRes = mailService.sendFeedBack(mail).getResponse()
         } catch (generalException: Exception) {
             generalException.printStackTrace()
         }

@@ -36,6 +36,7 @@ import com.vehicle.immatriculation.vin.R
 import com.vehicle.immatriculation.vin.dispatcher.DispatcherProvider
 import com.vehicle.immatriculation.vin.model.History
 import com.vehicle.immatriculation.vin.navigation.AppState
+import com.vehicle.immatriculation.vin.ui.widget.FeedbackDialog
 import com.vehicle.immatriculation.vin.ui.widget.LoadingIndicator
 import com.vehicle.immatriculation.vin.ui.widget.PlateWidget
 import com.vehicle.immatriculation.vin.ui.widget.TopBar
@@ -119,9 +120,7 @@ fun HomeScreenContent(
             .fillMaxHeight(),
     ) { // Remplir la hauteur disponible
 
-        if (!isSearchBarFocused) {
-            QuickInfoWidget()
-        }
+        FeedbackWidget(viewModel)
 
         Spacer(modifier = Modifier.weight(0.2f)) // Utiliser un Spacer avec un poids pour créer de l'espace
         Spacer(modifier = Modifier.height(30.dp)) // Utiliser un Spacer avec un poids pour créer de l'espace
@@ -290,3 +289,34 @@ fun QuickInfoWidget() {
         }
     }
 }
+
+
+@Composable
+fun FeedbackWidget(viewModel: HomeViewModel) {
+    var showDialog by remember { mutableStateOf(false) }
+    Card(
+        shape = MaterialTheme.shapes.medium,
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        modifier = Modifier
+            .padding(16.dp)
+            .clickable { showDialog = true }
+            .fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                "Avez-vous besoin d'une fonctionnalité ? Demandez-la maintenant !",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+    FeedbackDialog(showDialog, {
+        showDialog = false
+    }) {
+        showDialog = false
+        viewModel.sendFeedback(it)
+    }
+}
+

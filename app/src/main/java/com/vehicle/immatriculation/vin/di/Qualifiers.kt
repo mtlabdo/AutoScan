@@ -6,4 +6,7 @@ import javax.inject.Qualifier
 annotation class BaseUrl
 
 @Qualifier
+annotation class MailBaseUrl
+
+@Qualifier
 annotation class DbName
