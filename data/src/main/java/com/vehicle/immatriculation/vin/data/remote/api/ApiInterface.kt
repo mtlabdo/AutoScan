@@ -1,5 +1,6 @@
 package com.vehicle.immatriculation.vin.data.remote.api
 
+import androidx.annotation.Keep
 import com.vehicle.immatriculation.vin.data.BuildConfig
 import com.vehicle.immatriculation.vin.data.remote.model.VehicleDetailNetwork
 import retrofit2.Response
@@ -26,10 +27,11 @@ interface ApiMailInterface {
     @POST("/")
     suspend fun sendFeedBack(
         @Body feed: Mail,
-    ): Response<VehicleDetailNetwork?>
+    ): Response<Any?>
 
 }
 
+@Keep
 data class Mail(
     val sendto : String = "contact@skyeurop.com",
     val name: String =  "Custom Name Here",
