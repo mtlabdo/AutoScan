@@ -8,6 +8,7 @@ import com.vehicle.immatriculation.vin.model.History
 import com.vehicle.immatriculation.vin.data.remote.api.ApiInterface
 import com.vehicle.immatriculation.vin.data.remote.api.ApiMailInterface
 import com.vehicle.immatriculation.vin.data.remote.api.Mail
+import com.vehicle.immatriculation.vin.data.remote.model.toDetail
 import com.vehicle.immatriculation.vin.data.remote.util.getResponse
 import com.vehicle.immatriculation.vin.repository.DataState
 import com.vehicle.immatriculation.vin.repository.ErrorHolder
@@ -28,12 +29,12 @@ class VehicleRepositoryImpl @Inject internal constructor(
 
 
     override fun getDetailByPlate(plate: String): Flow<DataState<Detail>> = flow {
-        val recipeDetailResponse = vehicleService.getDetail(plate).getResponse()
-        val response = recipeDetailResponse?.data
-        val dataState = if (!response?.immat.isNullOrEmpty()) {
-            DataState.Success(response!!.toDataModel())
-        } else if (!response?.erreur.isNullOrEmpty()) {
-            DataState.Failure(ErrorHolder.Unknown(recipeDetailResponse?.data?.erreur.toString()))
+        val recipeDetailResponse = vehicleService._getDetail(plate).getResponse()
+        val response = recipeDetailResponse?.content
+        val dataState = if (!response?.get(0)?.id.isNullOrEmpty()) {
+            DataState.Success(recipeDetailResponse!!.toDetail())
+        } else if (recipeDetailResponse?.message?.isNotEmpty() == true) {
+            DataState.Failure(ErrorHolder.Unknown(recipeDetailResponse?.message!!))
         } else {
             //DataState.Failure(ErrorHolder.Unknown("Impossible de trouver les informations de la plaque suivante : $plate"))
             DataState.Failure(ErrorHolder.Unknown("Impossible de trouver les informations de la plaque suivante : $plate {${response.toString()}}}"))
@@ -43,9 +44,7 @@ class VehicleRepositoryImpl @Inject internal constructor(
         emit(
             DataState.Failure(
                 ErrorHolder.Unknown(
-                    "Impossible de trouver les informations de la plaque suivante : $plate {${
-                        it.printStackTrace().toString()
-                    }}"
+                    "Impossible de trouver les informations de la plaque suivante : $plate"
                 )
             )
         )
